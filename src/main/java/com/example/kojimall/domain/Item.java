@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -21,6 +22,12 @@ public class Item {
     @Column(name = "item_prc")
     private Long itemPrc;
 
+    @Column(name = "item_stc")
+    private Long itemStc;
+
+    @Column(name = "item_dsc")
+    private String itemDsc;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name = "cd", referencedColumnName = "cd"),
@@ -28,9 +35,8 @@ public class Item {
     })
     private Code category;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "tag_id")
-    private Tag tagId;
+    @OneToMany(mappedBy = "item")
+    private List<ItemTag> itemTagList;
 
     @Column(name = "reg_dt")
     private LocalDateTime regDt;

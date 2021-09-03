@@ -51,18 +51,44 @@
     <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
     <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
 
+    <script src="https://unpkg.com/@yaireo/tagify"></script>
+    <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
 </head>
 <script th:inline="javascript">
+    var tagIndex = 0;
     $(document).ready(function(){
         Dropzone.options.fileDropzone = {
-            url: 'Fileupload', //업로드할 url (ex)컨트롤러)
+            url: 'http://localhost:8080/item/add', //업로드할 url (ex)컨트롤러)
             init: function () { /* 최초 dropzone 설정시 init을 통해 호출 */
-                var submitButton = document.querySelector("#btn-upload-file");
-                var myDropzone = this; //closure
-                submitButton.addEventListener("click", function () {
+                var myDropZone = this;
+                var submitButton = document.getElementById("btn-upload-file");
+                submitButton.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     console.log("업로드"); //tell Dropzone to process all queued files
-                    myDropzone.processQueue();
+                    myDropZone.processQueue();
                 });
+
+                this.on("sendingmultiple",function(data, xhr, formData){
+                    let inputList = document.getElementById("form").getElementsByTagName("input");
+                    console.log("inputList = " + inputList);
+                    for (let i = 0; i <inputList.length; i++) {
+                        console.log(inputList[i].name + " = " + inputList[i].value);
+                        formData.append(inputList[i].name, inputList[i].value);
+                    }
+                    let selectTags = document.getElementsByClassName("tagify__tag-text");
+                    console.log("selectTags = " + selectTags);
+                    for (let i = 0; i < selectTags; i++) {
+                        console.log("selectTag = " + selectTags[i]);
+                        formData.append(selectTags[i].name, selectTags[i].value);
+                    }
+                    formData.append("category", document.getElementById("category").value);
+                    formData.append("itemDsc", document.getElementById("itemDsc").value);
+                    console.log(formData);
+                });
+
             },
             autoProcessQueue: false, // 자동업로드 여부 (true일 경우, 바로 업로드 되어지며, false일 경우, 서버에는 올라가지 않은 상태임 processQueue() 호출시 올라간다.)
             clickable: true, // 클릭가능여부
@@ -70,13 +96,81 @@
             thumbnailWidth: 120, // Upload icon size
             maxFiles: 3, // 업로드 파일수
             maxFilesize: 10, // 최대업로드용량 : 10MB
-            parallelUploads: 1, // 동시파일업로드 수(이걸 지정한 수 만큼 여러파일을 한번에 컨트롤러에 넘긴다.)
+            parallelUploads: 3, // 동시파일업로드 수(이걸 지정한 수 만큼 여러파일을 한번에 컨트롤러에 넘긴다.)
             addRemoveLinks: true, // 삭제버튼 표시 여부
             dictRemoveFile: 'delete', // 삭제버튼 표시 텍스트
             uploadMultiple: true, // 다중업로드 기능
         };
     });
+    function search(target) {
+        var word = target.value;
+        var encodeWord = encodeURI(word);
+        console.log(word);
+        console.log(encodeWord);
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: 'http://localhost:8080/search/tag?searchNm=' + word,
+            error: function (err) {
+                console.log('실행중 오류가 발생했습니다');
+            },
+            success: function (dataList) {
+                console.log('dataList : ' + dataList);
+                $("#tagList").empty();
+                var searchWord = $("#tag").val();
+                if(dataList.length > 0){
+                    for (var i=0;i<dataList.length;i++){
+                        $("#tagList").append(
+                            "<li style=\"padding: 5px 0px 5px 5px; margin-bottom: 5px; margin-left:15px; border-bottom: 1px solid #efefef; font-size: 14px; \" value='"+dataList[i].tagNm+"'>"+
+                                "<a onclick='selectTag(this)' id='"+i+"' value='"+dataList[i].tagNm+"'>"+dataList[i].tagNm+"</a>"+
+                            "</li>"
+                        )
+                    }
+                }
+            }
+        });
+    }
+
+    function selectTag(target) {
+        var selectTag = $(target).attr("value");
+        let tags = document.getElementById("tags");
+        let tag = document.createElement("tag");
+        tags.appendChild(tag);
+        tags.setAttribute("style", "border: 0px; display: inline");
+        tag.setAttribute("class", "tagify__tag tagify__noAnim");
+        let x = document.createElement("x");
+        x.setAttribute("title", "title");
+        x.setAttribute("class", "tagify__tag__removeBtn");
+        x.setAttribute("role", "button");
+        x.setAttribute("aria-label", "remove tag");
+        x.setAttribute("onclick", "removeTag(this)");
+        let div = document.createElement("div");
+        tag.appendChild(x);
+        tag.appendChild(div);
+        let span = document.createElement("span");
+        span.setAttribute("class", "tagify__tag-text");
+        span.setAttribute("name", "selectTag_"+tagIndex.toString());
+        span.setAttribute("value", selectTag);
+        span.innerText = selectTag;
+        div.appendChild(span);
+        $("#tagList").empty();
+    }
+
+    function removeTag(target) {
+        var tag = target.parentNode;
+        tag.parentNode.removeChild(tag);
+    }
+
+    function tagOnFocus(target){
+
+    }
+
+    // function checkSubmit() {
+    //     if()
+    // }
+
 </script>
+
 <body class="js">
 
 <!-- Preloader -->
@@ -115,7 +209,7 @@
 <section id="contact-us" class="contact-us section">
     <div class="container">
         <div class="contact-head">
-            <form class="form" method="post" action="/mypage" enctype="multipart/form-data">
+            <form class="form" id="form" method="post" action="/item/add" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-lg-8 col-12">
                         <div class="form-main">
@@ -127,16 +221,13 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label>Product Name</label>
-                                            <input type="text" placeholder="Enter your product name">
+                                            <input name="itemNm" type="text" placeholder="Enter your product name">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label>Description<span>*</span></label>
-                                            <textarea></textarea>
-    <!--                                        <div>-->
-    <!--                                            <p th:if="${#fields.hasErrors('email')}" style="margin-left: 2px; margin-top: 0px; color: #bd2130; font-size: medium" th:errors="*{email}">error message</p>-->
-    <!--                                        </div>-->
+                                            <textarea id="itemDsc" name="itemDsc"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
@@ -156,7 +247,7 @@
                                     <div class="form-group">
                                         <label>Category<Name> </Name>*</label>
                                         <div>
-                                            <select class="nice-select">
+                                            <select id="category" name="category" class="nice-select">
                                                 <option th:each="category : ${categoryList}"
                                                         th:value="${category.cd}"
                                                         th:utext="${category.cdNm}"
@@ -166,13 +257,42 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="single-info">
+                            <div class="single-info" style="margin-bottom: 50px">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Tags<Name> </Name>*</label>
+                                        <span>
+                                            <label>Tags<Name> </Name>*</label>
+                                        </span>
+                                        <span>
+                                            <tags id="tags" class="tagify" style="border: 0px"></tags>
+                                        </span>
                                         <div>
-                                            <input class="form" type="text">
+                                            <input class="form" type="text" id="tag" name="tag" onkeyup="search(this)">
+                                            <ul id="tagList"></ul>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-info" style="magin-bottom: 70px">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Price (KRW)</label>
+                                        <input name="itemPrc" type="text" placeholder="Price">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-info" style="magin-bottom: 70px">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label>Amount</label>
+                                        <input name="itemAmt" type="text" placeholder="Amount">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-info" style="magin-bottom: 70px">
+                                <div class="col-12">
+                                    <div class="form-group button">
+                                        <button type="submit" id="btn-upload-file" class="btn btn-upload-file">Register</button>
                                     </div>
                                 </div>
                             </div>

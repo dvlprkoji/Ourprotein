@@ -3,6 +3,7 @@ package com.example.kojimall.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,4 +23,7 @@ public class Tag {
 
     @Column(name = "mod_dt")
     private String modDt;
+
+    @OneToMany(mappedBy = "tag")
+    private List<ItemTag> itemTagList;
 }
