@@ -1,4 +1,4 @@
-package com.example.kojimall;
+package com.example.kojimall.config;
 
 import com.example.kojimall.common.LogFilter;
 import com.example.kojimall.common.LoginCheckFilter;

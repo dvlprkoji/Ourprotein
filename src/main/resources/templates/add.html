@@ -79,11 +79,11 @@
                         formData.append(inputList[i].name, inputList[i].value);
                     }
                     let selectTags = document.getElementsByClassName("tagify__tag-text");
-                    console.log("selectTags = " + selectTags);
-                    for (let i = 0; i < selectTags; i++) {
-                        console.log("selectTag = " + selectTags[i]);
-                        formData.append(selectTags[i].name, selectTags[i].value);
+                    var selectTagParams = new Array();
+                    for (let i = 0; i < selectTags.length; i++) {
+                        selectTagParams.push(selectTags[i].innerText);
                     }
+                    formData.append("selectTags", selectTagParams);
                     formData.append("category", document.getElementById("category").value);
                     formData.append("itemDsc", document.getElementById("itemDsc").value);
                     console.log(formData);
@@ -154,6 +154,7 @@
         span.innerText = selectTag;
         div.appendChild(span);
         $("#tagList").empty();
+        document.getElementById("tag").value = "";
     }
 
     function removeTag(target) {

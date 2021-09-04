@@ -12,7 +12,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
@@ -20,3 +20,19 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
+
+uploadFile:
+  path: /home/koji/koji-mall/S3Images/
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA26MX4NM4LBA73UOI
+      secretKey: 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
+    stack:
+      auto: false
+    s3:
+      bucket: bucketforkoji
+      bucketUrl: https://s3.ap-northeast-2.amazonaws.com/bucketforkoji/
+    region:
+      static: ap-northeast-2

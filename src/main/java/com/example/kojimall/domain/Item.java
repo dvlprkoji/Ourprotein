@@ -2,6 +2,8 @@ package com.example.kojimall.domain;
 
 
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -39,9 +41,11 @@ public class Item {
     private List<ItemTag> itemTagList;
 
     @Column(name = "reg_dt")
+    @CreationTimestamp
     private LocalDateTime regDt;
 
     @Column(name = "mod_dt")
+    @CreationTimestamp
     private LocalDateTime modDt;
 
 }

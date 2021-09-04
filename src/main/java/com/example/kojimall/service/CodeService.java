@@ -6,16 +6,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+
+import static com.example.kojimall.domain.CodeVal.*;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class CodeService {
 
     private final CodeRepository codeRepository;
-
-    private static final String CD_CATEGORY = "CAT_TY";
 
     public List<Code> getCategoryList() {
         List<Code> codes = codeRepository.getCodes(CD_CATEGORY);
@@ -25,4 +27,15 @@ public class CodeService {
         return codes;
     }
 
+    public Code getProductCode() {
+        Code code = codeRepository.getCode(PRODUCT_IMG);
+        if (code == null) {
+            log.info("no such code");
+        }
+        return code;
+    }
+
+    public Code getCategoryCode(String cd) {
+        return codeRepository.getCode(cd);
+    }
 }

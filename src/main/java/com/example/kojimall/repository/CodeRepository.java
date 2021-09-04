@@ -21,4 +21,11 @@ public class CodeRepository {
         List<Code> resultList = query.getResultList();
         return resultList;
     }
+
+    public Code getCode(String cd) {
+        TypedQuery<Code> query = em.createQuery("select c from Code c where c.cd=:cd", Code.class);
+        query.setParameter("cd", cd);
+        Code singleResult = query.getSingleResult();
+        return singleResult;
+    }
 }

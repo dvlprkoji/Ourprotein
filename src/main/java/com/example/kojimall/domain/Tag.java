@@ -5,7 +5,6 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
 
-@Data
 @Entity
 @Table(schema = "kojimall")
 public class Tag {
@@ -26,4 +25,36 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag")
     private List<ItemTag> itemTagList;
+
+    public Long getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(Long tagId) {
+        this.tagId = tagId;
+    }
+
+    public String getTagNm() {
+        return tagNm;
+    }
+
+    public void setTagNm(String tagNm) {
+        this.tagNm = tagNm;
+    }
+
+    public String getRegDt() {
+        return regDt;
+    }
+
+    public void setRegDt(String regDt) {
+        this.regDt = regDt;
+    }
+
+    public String getModDt() {
+        return modDt;
+    }
+
+    public void setModDt(String modDt) {
+        this.modDt = modDt;
+    }
 }

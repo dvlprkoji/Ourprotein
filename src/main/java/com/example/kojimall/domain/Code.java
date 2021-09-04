@@ -14,8 +14,7 @@ public class Code implements Serializable {
     private String cd;
     @Id
     @Column(name = "grp_cd")
-    private String
-            grpCd;
+    private String grpCd;
     @Column(name = "cd_nm")
     private String cdNm;
     @Column(name = "grp_cd_nm")
