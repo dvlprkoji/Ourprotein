@@ -27,8 +27,8 @@ uploadFile:
 cloud:
   aws:
     credentials:
-      accessKey: AKIA26MX4NM4LBA73UOI
-      secretKey: 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
+      accessKey: -
+      secretKey: -
     stack:
       auto: false
     s3:
