@@ -22,12 +22,26 @@
                             <li><i class="ti-location-pin"></i> Store location</li>
                             <li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
                             <li><i class="ti-user"></i>
-                                <a th:if="${loginMember == null}" href="login">Login</a>
-                                <a th:if="${loginMember != null}" href="mypage">My Page</a>
+                                <a th:if="${loginMember == null}" id="login">Login</a>
+                                <script th:inline="javascript">
+                                    /*<![CDATA[*/
+                                    let currentURI = /*[[ ${#httpServletRequest.requestURI} ]]*/;
+                                    /*]]*/
+
+                                    /*<![CDATA[*/
+                                    var params = /*[[ ${#httpServletRequest.getParameterMap()} ]]*/;
+                                    /*]]*/
+
+                                    for(var i in params){
+                                        currentURI += ('?' + i + '=' + params[i][0]);
+                                    }
+                                    document.getElementById("login").setAttribute("href", "http://localhost:8080/login?redirectURL="+currentURI);
+                                </script>
+                                <a th:if="${loginMember != null}" id="myPage" href="http://localhost:8080/mypage">My Page</a>
                             </li>
                             <li><i class="ti-power-off"></i>
-                                <a th:if="${loginMember == null}" href="register">Register</a>
-                                <a th:if="${loginMember != null}" href="logout">Logout</a>
+                                <a th:if="${loginMember == null}" href="http://localhost:8080/register">Register</a>
+                                <a th:if="${loginMember != null}" href="http://localhost:8080/logout">Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -43,7 +57,7 @@
                 <div class="col-lg-2 col-md-2 col-12">
                     <!-- Logo -->
                     <div class="logo">
-                        <a href="/"><img src="/static/images/logo.png" alt="logo"></a>
+                        <a href="/"><img style="width: 300px" src="https://bucketforkoji.s3.ap-northeast-2.amazonaws.com/kojimall/logo.png" alt="logo"></a>
                     </div>
                     <!--/ End Logo -->
                     <!-- Search Form -->
@@ -136,16 +150,16 @@
                                     <div class="nav-inner">
                                         <ul class="nav main-menu menu navbar-nav">
                                             <div th:if="${#httpServletRequest.requestURI == '/'}">
-                                                <li class="active"><a href="/">Home</a></li>
+                                                <li class="active"><a href="http://localhost:8080">Home</a></li>
                                             </div>
                                             <div th:unless="${#httpServletRequest.requestURI == '/'}">
-                                                <li><a href="/">Home</a></li>
+                                                <li><a href="http://localhost:8080">Home</a></li>
                                             </div>
-                                            <div th:if="${#httpServletRequest.requestURI == '/item'}">
-                                                <li class="active"><a href="item">Product</a></li>
+                                            <div th:if="${#httpServletRequest.requestURI.split('/').length>1 and #httpServletRequest.requestURI.split('/')[1] == 'item'}">
+                                                <li class="active"><a href="http://localhost:8080/item">Product</a></li>
                                             </div>
-                                            <div th:unless="${#httpServletRequest.requestURI == '/item'}">
-                                                <li><a href="item">Product</a></li>
+                                            <div th:unless="${#httpServletRequest.requestURI.split('/').length>1 and #httpServletRequest.requestURI.split('/')[1] == 'item'}">
+                                                <li><a href="http://localhost:8080/item">Product</a></li>
                                             </div>
                                             <li><a href="#">Service</a></li>
                                             <li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>

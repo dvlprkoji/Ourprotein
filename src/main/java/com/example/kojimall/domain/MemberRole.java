@@ -1,5 +1,5 @@
 package com.example.kojimall.domain;
 
 public enum MemberRole {
-    ADMIN, MEMBER
+    ADMIN, MEMBER, VIP
 }

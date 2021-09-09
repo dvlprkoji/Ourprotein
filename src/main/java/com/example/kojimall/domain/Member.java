@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(schema = "kojimall")
 public class Member {
-    
-    @Id @GeneratedValue
+
+    @Id
+    @GeneratedValue
     @Column(name = "mem_id")
     private Long id;
     @Column(name = "mem_nm")
@@ -30,8 +31,12 @@ public class Member {
     @Embedded
     private Address address;
 
+    @Column(name = "sub_yn")
+    private String subYn;
+
     @Column(name = "reg_dt")
     private LocalDateTime regDate;
     @Column(name = "mod_dt")
     private LocalDateTime modDate;
+
 }

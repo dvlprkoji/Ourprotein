@@ -14,6 +14,9 @@ public class Image {
     @Column(name = "img_id")
     private Long imgId;
 
+    @Column(name = "img_grp_id")
+    private String imgGrpId;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name = "cd", referencedColumnName = "cd"),
@@ -23,9 +26,6 @@ public class Image {
 
     @Column(name="path")
     private String path;
-
-    @Column(name = "img_grp_id")
-    private String imgGrpId;
 
     @Column(name = "fe_nm")
     private String feNm;

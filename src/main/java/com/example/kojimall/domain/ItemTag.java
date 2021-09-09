@@ -2,8 +2,10 @@ package com.example.kojimall.domain;
 
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -21,4 +23,12 @@ public class ItemTag {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tag_id")
     public Tag tag;
+
+    @Column(name = "reg_dt")
+    @CreationTimestamp
+    private LocalDateTime regDt;
+
+    @Column(name = "mod_dt")
+    @CreationTimestamp
+    private LocalDateTime modDt;
 }

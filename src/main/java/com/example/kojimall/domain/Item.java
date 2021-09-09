@@ -30,6 +30,9 @@ public class Item {
     @Column(name = "item_dsc")
     private String itemDsc;
 
+    @Column(name = "img_grp_id")
+    private String imgGrpId;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name = "cd", referencedColumnName = "cd"),

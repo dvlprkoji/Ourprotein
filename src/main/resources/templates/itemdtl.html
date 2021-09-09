@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <!-- Meta Tag -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='copyright' content=''>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Title Tag  -->
+    <title>Eshop - eCommerce HTML5 Template.</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <!-- Web Font -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+    <!-- StyleSheet -->
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="/css/magnific-popup.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/css/font-awesome.css">
+    <!-- Fancybox -->
+    <link rel="stylesheet" href="/css/jquery.fancybox.min.css">
+    <!-- Themify Icons -->
+    <link rel="stylesheet" href="/css/themify-icons.css">
+    <!-- Nice Select CSS -->
+    <link rel="stylesheet" href="/css/niceselect.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="/css/animate.css">
+    <!-- Flex Slider CSS -->
+    <link rel="stylesheet" href="/css/flex-slider.min.css">
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="/css/owl-carousel.css">
+    <!-- Slicknav -->
+    <link rel="stylesheet" href="/css/slicknav.min.css">
+
+    <!-- Eshop StyleSheet -->
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+
+    <!-- Jquery -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery-migrate-3.0.0.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+
+    <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+    <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+
+    <script src="https://unpkg.com/@yaireo/tagify"></script>
+    <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
+
+    <style>
+
+        .pagination-success .page-item.active .page-link
+        {
+            background: orange;
+            border-color: orange;
+        }
+        .item-title{
+            font-family: Biotif,"Noto Sans","Noto Sans JP","Noto Sans KR",Helvetica;
+            font-weight: 700;
+            font-size: 2.05rem;
+            line-height: 2.5rem;
+            color: #1a1a1a;
+            text-transform: none;
+            letter-spacing: -.5px;
+            margin-top: 8px;
+        }
+        .item-content{
+        }
+        .item-description{
+            font-family: Biotif,"Noto Sans","Noto Sans JP","Noto Sans KR",Helvetica;
+            font-weight: 400;
+            font-size: 1.27rem;
+            line-height: 1.75rem;
+            color: #1a1a1a;
+            text-transform: none;
+            color: #707070;
+            margin-top: 8px;
+        }
+        .item-taglist{
+            margin-top: 10px;
+        }
+        .item-tag{
+            margin: 5px 5px 5px 0px;
+        }
+        .productPage_hr{
+            width: 100%;
+            border-width: .5px;
+            border-style: solid;
+            border-color: #ccc;
+        }
+        .productPage_productPrice{
+            display: block;
+            width: 100%;
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
+        .productPrice{
+            border-top: 0;
+            padding-top: 0;
+        }
+        .productPrice_schema{
+            display: none;
+        }
+        .productPrice_priceWithBadge{
+            display: flex;
+        }
+        .productPrice_rrpPriceInfo{
+            display: flex;
+        }
+        .productPrice_rrp{
+            font-family: Biotif,"Noto Sans","Noto Sans JP","Noto Sans KR",Helvetica;
+            font-weight: 400;
+            font-size: 15px;
+            line-height: 1.25rem;
+            color: #1a1a1a;
+            text-transform: normal;
+            letter-spacing: .2px;
+            color: #707070;
+            display: block;
+            margin-bottom: 8px;
+            margin-top: 8px;
+            text-decoration: none;
+        }
+        .productPrice_price {
+            font-size: 26px;
+            font-family: Biotif, "Noto Sans", "Noto Sans JP", "Noto Sans KR", Helvetica;
+            font-weight: 700;
+            font-size: 28px;
+            line-height: 2rem;
+            color: #1a1a1a;
+            text-transform: none;
+            letter-spacing: -.5px;
+            color: inherit;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        .productPrice_savingAmount{
+            font-family: Biotif,"Noto Sans","Noto Sans JP","Noto Sans KR",Helvetica;
+            font-weight: 400;
+            font-size: 13px;
+            line-height: 1.25rem;
+            color: #1a1a1a;
+            text-transform: normal;
+            letter-spacing: .2px;
+            display: block;
+            margin-bottom: 8px;
+            margin-top: 0;
+            color: #c03;
+        }
+        .athenaProductPage_imageContainer{
+            height: auto;
+        }
+        .athenaProductImageCarousel_imagesContainer {
+            margin-left: 16px;
+            margin-right: 16px;
+            flex-grow: 0;
+            flex-shrink: 0;
+            flex-basis: calc(85.71429% - 32px);
+            box-sizing: border-box;
+            order: 2;
+            height: fit-content;
+            overflow: hidden;
+            position: relative;
+        }
+        .athenaProductImageCarousel {
+            flex-wrap: nowrap;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            width: 100%;
+
+        }
+        .athenaProductImageCarousel_thumbnailScrollContainer {
+            height: 671.984px;
+            margin-left: 16px;
+            margin-right: 16px;
+            flex-grow: 0px;
+            flex-shrink: 0px;
+            flex-basis: calc(14.28571% - 32px);
+        }
+        .athenaProductImageCarousel_thumbnailContainer {
+            display: block;
+            width: 100%;
+            margin-top: 0;
+            margin-left: 0;
+            margin-right: 0;
+            flex-wrap: nowrap;
+        }
+        .athenaProductImageCarousel_listItem {
+            margin-right: 0;
+            margin-bottom: 8px;
+            list-style: none;
+            padding: 0;
+        }
+        .athenaProductImageCarousel_thumbnailWrapper[data-active=true] {
+            border-color: #008190;
+        }
+        .athenaProductImageCarousel_thumbnailWrapper:last-of-type{
+            margin-right: 0;
+        }
+        .athenaProductImageCarousel_thumbnailWrapper{
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: auto;
+            border-width: 2px;
+            border-style: solid;
+            border-color: #f2f2f2;
+            box-sizing: border-box;
+            cursor: pointer;
+            padding: 0;
+            outline: 0;
+        }
+        .athenaProductImageCarousel_thumbnail {
+            width: 100%;
+            height: auto;
+            min-height: inherit;
+            max-height: inherit;
+            min-width: 100%;
+        }
+        .itemDtlContatiner{
+            margin-left: 200px;
+            margin-right: 200px;
+            max-width: 1400px;
+        }
+
+    </style>
+</head>
+<body class="js">
+
+<!-- Preloader -->
+<div class="preloader">
+    <div class="preloader-inner">
+        <div class="preloader-icon">
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+<!-- End Preloader -->
+
+<!-- Header -->
+<header th:replace="fragments/header :: header" />
+<!--/ End Header -->
+
+<!-- Start Product Area -->
+<div class="product-area section">
+    <div class="itemDtlContatiner">
+        <div class="row">
+            <div class="col-7">
+                <div role="group" aria-label="제품 이미지" class="athenaProductPage_imageContainer">
+                    <div class="athenaProductImageCarousel" data-component="athenaProductImageCarousel">
+                        <div class="athenaProductImageCarousel_thumbnailScrollContainer ">
+                            <ul class="athenaProductImageCarousel_thumbnailContainer" aria-label="Product Images">
+                                <script th:inline="javascript">
+                                    $(function(){
+                                        let thumbnailWrapperList= document.getElementsByName("thumbnailImageWrapper");
+                                        thumbnailWrapperList[0].setAttribute("data-active", true);
+                                    });
+                                    function changeImage(target) {
+                                        document.getElementById("mainImage").setAttribute("src", target.src);
+                                        document.getElementsByName("thumbnailImageWrapper").forEach(function (tag) {
+                                            if (tag.hasAttribute("data-active")) {
+                                                tag.removeAttribute("data-active");
+                                            }
+                                        });
+                                        target.parentNode.setAttribute("data-active",true);
+                                    }
+                                </script>
+                                <li th:each="itemImgPath : ${item.imgPathList}" class="athenaProductImageCarousel_listItem">
+                                    <button name="thumbnailImageWrapper" type="button" class="athenaProductImageCarousel_thumbnailWrapper " data-thumbnail-type="image" aria-label="이미지 열기 1 - 임팩트 웨이 프로틴 - 250g - 초콜렛 스무스" title="이미지 열기 1 - 임팩트 웨이 프로틴 - 250g - 초콜렛 스무스" data-component-tracked-clicked="" data-context="athena_product_image_carousel_thumbnail">
+                                        <img class="athenaProductImageCarousel_thumbnail" th:src="${itemImgPath}" onclick="changeImage(this)">
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="athenaProductImageCarousel_imagesContainer" data-component-tracked-viewed="" data-context="athena_product_image_carousel">
+                            <div class="athenaProductImageCarousel_imageSlider" style="left: 0%;">
+                                <div id="mainImageWrapper" class="athenaProductImageCarousel_imageWrapper" data-type="image">
+                                    <img id="mainImage" class="athenaProductImageCarousel_image" th:src="${item.imgPathList[0]}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="single-info" th:object="${item}">
+                    <div class="item-content">
+                        <div class="item-title " th:text="*{itemNm}"></div>
+                    </div>
+                    <div class="item-description " th:text="*{itemDsc}"></div>
+                    <script th:inline="javascript">
+                        $(function(){
+                            /*<![CDATA[*/
+                            var tagList = /*[[ ${item.tagList} ]]*/;
+                            /*]]*/
+                            tagList.forEach(function(t){
+                                let tags = document.getElementById("tags");
+                                let tag = document.createElement("tag");
+                                tags.appendChild(tag);
+                                tags.setAttribute("style", "border: 0px; display: inline");
+                                tag.setAttribute("class", "tagify__tag tagify__noAnim item-tag");
+                                let div1 = document.createElement("div");
+                                tag.appendChild(div1);
+                                let div2 = document.createElement("div");
+                                div2.setAttribute("class", "tagify__tag-text");
+                                div2.innerText = t.tagNm;
+                                div1.appendChild(div2);
+                            });
+                        });
+                    </script>
+                    <div id="tagList" class="item-taglist">
+                        <tags id="tags" class="tagify" style="border: 0px"></tags>
+                    </div>
+                    <div>
+                        <hr aria-hidden="true" class="productPage_hr">
+                    </div>
+                    <div class="athenaProductPage_productPrice">
+                        <div class="productPrice" th:object="${item}">
+                            <span class="productPrice_schema">KRW</span>
+                            <span class="productPrice_schema productPrice_priceAmount" data-schema="price">14900.0</span>
+                            <div class="productPrice_priceWithBadge">
+                                <span class="productPrice_priceInfo">
+                                    <span class="productPrice_rrpPriceInfo">
+                                        <p th:if="${!(item.itemDscAmt.toString().equals('0'))}"class="productPrice_rrp" th:text="|original price: ₩${#numbers.formatInteger(item.itemPrc,3,'COMMA')}|">original Price</p>
+                                    </span>
+                                    <p class="productPrice_price " th:text="|₩${#numbers.formatInteger(item.itemDscPrc,3,'COMMA')}|">discount Price</p>
+                                    <p th:if="${!(item.itemDscAmt.toString().equals('0'))}" class="productPrice_savingAmount" th:text="|Save ₩${#numbers.formatInteger(item.itemDscAmt,3,'COMMA')}|">Save</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Start Shop Services Area -->
+<section class="shop-services section home">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-rocket"></i>
+                    <h4>Free shiping</h4>
+                    <p>Orders over $100</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-reload"></i>
+                    <h4>Free Return</h4>
+                    <p>Within 30 days returns</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-lock"></i>
+                    <h4>Sucure Payment</h4>
+                    <p>100% secure payment</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-tag"></i>
+                    <h4>Best Peice</h4>
+                    <p>Guaranteed price</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Shop Services Area -->
+
+<!-- Start Shop Newsletter  -->
+<section class="shop-newsletter section">
+    <div class="container">
+        <div class="inner-top">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 col-12">
+                    <!-- Start Newsletter Inner -->
+                    <div class="inner">
+                        <h4>Newsletter</h4>
+                        <p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
+                        <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
+                            <input name="EMAIL" placeholder="Your email address" required="" type="email">
+                            <button class="btn">Subscribe</button>
+                        </form>
+                    </div>
+                    <!-- End Newsletter Inner -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Shop Newsletter -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row no-gutters">
+                    <div class="col-lg-6 offset-lg-3 col-12">
+                        <h4 style="margin-top:100px;font-size:14px; font-weight:500; color:#F7941D; display:block; margin-bottom:5px;">Eshop Free Lite</h4>
+                        <h3 style="font-size:30px;color:#333;">Currently You are using free lite Version of Eshop.</h3>
+                            <p style="display:block; margin-top:20px; color:#888; font-size:14px; font-weight:400;">Please, purchase full version of the template to get all pages, features and commercial license</p>
+                            <div class="button" style="margin-top:30px;">
+                                <a href="https://wpthemesgrid.com/downloads/eshop-ecommerce-html5-template/" target="_blank" class="btn" style="color:#fff;">Buy Now!</a>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+
+<!-- Start Footer Area -->
+<footer class="footer">
+    <!-- Footer Top -->
+    <div class="footer-top section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-6 col-12">
+                    <!-- Single Widget -->
+                    <div class="single-footer about">
+                        <div class="logo">
+                            <a href="index.html"><img src="images/logo2.png" alt="#"></a>
+                        </div>
+                        <p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
+                        <p class="call">Got Question? Call us 24/7<span><a href="tel:123456789">+0123 456 789</a></span></p>
+                    </div>
+                    <!-- End Single Widget -->
+                </div>
+                <div class="col-lg-2 col-md-6 col-12">
+                    <!-- Single Widget -->
+                    <div class="single-footer links">
+                        <h4>Information</h4>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Faq</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Help</a></li>
+                        </ul>
+                    </div>
+                    <!-- End Single Widget -->
+                </div>
+                <div class="col-lg-2 col-md-6 col-12">
+                    <!-- Single Widget -->
+                    <div class="single-footer links">
+                        <h4>Customer Service</h4>
+                        <ul>
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Money-back</a></li>
+                            <li><a href="#">Returns</a></li>
+                            <li><a href="#">Shipping</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <!-- End Single Widget -->
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- Single Widget -->
+                    <div class="single-footer social">
+                        <h4>Get In Tuch</h4>
+                        <!-- Single Widget -->
+                        <div class="contact">
+                            <ul>
+                                <li>NO. 342 - London Oxford Street.</li>
+                                <li>012 United Kingdom.</li>
+                                <li>info@eshop.com</li>
+                                <li>+032 3456 7890</li>
+                            </ul>
+                        </div>
+                        <!-- End Single Widget -->
+                        <ul>
+                            <li><a href="#"><i class="ti-facebook"></i></a></li>
+                            <li><a href="#"><i class="ti-twitter"></i></a></li>
+                            <li><a href="#"><i class="ti-flickr"></i></a></li>
+                            <li><a href="#"><i class="ti-instagram"></i></a></li>
+                        </ul>
+                    </div>
+                    <!-- End Single Widget -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Footer Top -->
+    <div class="copyright">
+        <div class="container">
+            <div class="inner">
+                <div class="row">
+                    <div class="col-lg-6 col-12">
+                        <div class="left">
+                            <p>Copyright © 2020 <a href="http://www.wpthemesgrid.com" target="_blank">Wpthemesgrid</a>  -  All Rights Reserved.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <div class="right">
+                            <img src="images/payments.png" alt="#">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- /End Footer Area -->
+
+<!-- Popper JS -->
+<script src="/js/popper.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="/js/bootstrap.min.js"></script>
+<!-- Color JS -->
+<script src="/js/colors.js"></script>
+<!-- Slicknav JS -->
+<script src="/js/slicknav.min.js"></script>
+<!-- Owl Carousel JS -->
+<script src="/js/owl-carousel.js"></script>
+<!-- Magnific Popup JS -->
+<script src="/js/magnific-popup.js"></script>
+<!-- Waypoints JS -->
+<script src="/js/waypoints.min.js"></script>
+<!-- Countdown JS -->
+<script src="/js/finalcountdown.min.js"></script>
+<!-- Nice Select JS -->
+<script src="/js/nicesellect.js"></script>
+<!-- Flex Slider JS -->
+<script src="/js/flex-slider.js"></script>
+<!-- ScrollUp JS -->
+<script src="/js/scrollup.js"></script>
+<!-- Onepage Nav JS -->
+<script src="/js/onepage-nav.min.js"></script>
+<!-- Easing JS -->
+<script src="/js/easing.js"></script>
+<!-- Active JS -->
+<script src="/js/active.js"></script>
+
+</body>
+</html>

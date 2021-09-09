@@ -43,7 +43,7 @@
 				</div>
 				<div class="form-row">
 					<label th:for="password">Password</label>
-					<input type="text" th:field="*{password}" class="input-text" th:style="${#fields.hasErrors('password')}? 'border-color: #bd2130; margin-bottom: 2px' : ''" placeholder="Your Password">
+					<input type="password" th:field="*{password}" class="input-text" th:style="${#fields.hasErrors('password')}? 'border-color: #bd2130; margin-bottom: 2px' : ''" placeholder="Your Password">
 					<i class="fas fa-lock"></i>
 					<div>
 						<p th:if="${#fields.hasErrors('password')}" style="margin-left: 2px; margin-top: 0px; color: #bd2130; font-size: medium" th:errors="*{password}">error message</p>

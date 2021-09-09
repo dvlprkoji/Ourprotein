@@ -89,6 +89,9 @@
                     console.log(formData);
                 });
 
+                this.on("successmultiple", function (file, response) {
+                    window.location.replace("/");
+                });
             },
             autoProcessQueue: false, // 자동업로드 여부 (true일 경우, 바로 업로드 되어지며, false일 경우, 서버에는 올라가지 않은 상태임 processQueue() 호출시 올라간다.)
             clickable: true, // 클릭가능여부

@@ -624,7 +624,7 @@ Version:1.0
 }
 .header.shop .logo {
 	float: left;
-	margin: 19px 0 0;
+	margin: 25px 0 0;
 }
 .header.shop .top-contact {
 	margin-top:0px;
@@ -1214,7 +1214,7 @@ Version:1.0
 }
 .hero-slider .single-slider {
 	height: auto;
-	background-image: url('https://via.placeholder.com/1900x700');
+	background-image: url('https://bucketforkoji.s3.ap-northeast-2.amazonaws.com/kojimall/indexMain.png');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -1554,7 +1554,7 @@ Version:1.0
 	font-size: 22px;
 	font-weight: 700;
 	text-transform: capitalize;
-	color: #333;
+	color: orange;
 }
 .small-banner .single-banner h3 span{
 	color:#F7941D;
@@ -1567,14 +1567,14 @@ Version:1.0
 	text-transform: capitalize;
 }
 .small-banner .single-banner a {
-	color: #333;
+	color: orange;
 	margin-top: 22px;
 	display: block;
 	font-size: 12px;
 	font-weight:500;
 	display: inline-block;
 	text-transform:uppercase;
-	border-bottom:2px solid #333;
+	border-bottom:2px solid orange;
 }
 .small-banner .single-banner a:hover{
 	color:#F7941D;
@@ -3617,8 +3617,8 @@ Version:1.0
 	margin-right:0px;
 }
 .pagination .pagination-list li a {
-	background: #F6F7FB;
-	color: #666;
+	background: orange;
+	color: orange;
 	padding: 6px 18px;
 	font-weight: 400;
 	border: 1px solid #e1e1e1;
@@ -3627,8 +3627,8 @@ Version:1.0
 }
 .pagination .pagination-list li.active a,
 .pagination .pagination-list li:hover a{
-	background: #F7941D;
-	color: #fff;
+	background: orange;
+	color: orange;
 	border-color: transparent;
 }
 .pagination .pagination-list li a i{

@@ -23,6 +23,7 @@ public class MemberService {
     public void join(Member member) {
         Code memberCode = memberRepository.getCode("M0001");
         member.setMemberRole(memberCode);
+        member.setSubYn("N");
         memberRepository.save(member);
     }
 

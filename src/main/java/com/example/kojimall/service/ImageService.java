@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.kojimall.domain.Code;
 import com.example.kojimall.domain.Image;
+import com.example.kojimall.repository.CodeRepository;
 import com.example.kojimall.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +17,12 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.example.kojimall.domain.CodeVal.PRODUCT_HOVER;
+import static com.example.kojimall.domain.CodeVal.PRODUCT_MAIN;
 
 @Slf4j
 @Service
@@ -27,6 +32,7 @@ public class ImageService {
 
     private final AmazonS3Client amazonS3Client;
     private final ImageRepository imageRepository;
+    private final CodeRepository codeRepository;
 
     @Value("${uploadFile.path}")
     public String imageDir;
@@ -87,5 +93,25 @@ public class ImageService {
         image.setUseYn("Y");
 
         imageRepository.saveImg(image);
+    }
+
+    public Image getProductMainImage(String imgGrpId) {
+        Code mainImageCode = codeRepository.getCode(PRODUCT_MAIN);
+        Image image = imageRepository.getImage(imgGrpId, mainImageCode);
+        return image;
+    }
+
+    public Image getProductHoverImage(String imgGrpId) {
+        Code hoverImageCode = codeRepository.getCode(PRODUCT_HOVER);
+        Image image = imageRepository.getImage(imgGrpId, hoverImageCode);
+        return image;
+    }
+
+    public Integer getImageCnt(String imgGrpId) {
+        return imageRepository.getImageCnt(imgGrpId).intValue();
+    }
+
+    public List<Image> getProductImageList(String imgGrpId) {
+        return imageRepository.getImageList(imgGrpId);
     }
 }
