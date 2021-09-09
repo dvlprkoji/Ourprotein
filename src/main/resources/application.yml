@@ -29,6 +29,7 @@ cloud:
     credentials:
       accessKey: AKIA26MX4NM4A6YPS4HI
       secretKey: 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
+
     stack:
       auto: false
     s3:
