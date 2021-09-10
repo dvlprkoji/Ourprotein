@@ -21,11 +21,7 @@ public class Item {
     @Column(name = "item_nm")
     private String itemNm;
 
-    @Column(name = "item_prc")
-    private Long itemPrc;
 
-    @Column(name = "item_stc")
-    private Long itemStc;
 
     @Column(name = "item_dsc")
     private String itemDsc;
@@ -33,12 +29,16 @@ public class Item {
     @Column(name = "img_grp_id")
     private String imgGrpId;
 
+    @Column(name = "item_rat", columnDefinition = "numeric(1,1) default 1.0")
+    private Double itemRat;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name = "cd", referencedColumnName = "cd"),
             @JoinColumn(name = "grp_cd", referencedColumnName = "grp_cd")
     })
     private Code category;
+
 
     @OneToMany(mappedBy = "item")
     private List<ItemTag> itemTagList;
@@ -50,5 +50,7 @@ public class Item {
     @Column(name = "mod_dt")
     @CreationTimestamp
     private LocalDateTime modDt;
+
+
 
 }

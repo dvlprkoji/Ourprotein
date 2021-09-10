@@ -22,6 +22,8 @@ public class ItemDtl {
 
     private Long itemStc;
 
+    private Double itemRat;
+
     private String itemDsc;
 
     private Code category;

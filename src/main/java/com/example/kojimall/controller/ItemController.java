@@ -1,5 +1,6 @@
 package com.example.kojimall.controller;
 
+import com.example.kojimall.common.CommonUtils;
 import com.example.kojimall.common.Pagination;
 import com.example.kojimall.domain.*;
 import com.example.kojimall.service.CodeService;
@@ -25,6 +26,7 @@ import static com.example.kojimall.domain.CodeVal.PRODUCT_MAIN;
 @RequiredArgsConstructor
 public class ItemController {
 
+    private final CommonUtils commonUtils;
     private final ItemService itemService;
     private final CodeService codeService;
     private final ImageService imageService;
@@ -67,7 +69,6 @@ public class ItemController {
             ItemPreview itemPreview = new ItemPreview();
             itemPreview.setItemId(item.getItemId());
             itemPreview.setItemNm(item.getItemNm());
-            itemPreview.setItemPrc(item.getItemPrc());
 
             Image mainImage = imageService.getProductMainImage(item.getImgGrpId());
             itemPreview.setMainImagePath(mainImage.getPath());
@@ -106,11 +107,15 @@ public class ItemController {
         model.addAttribute("loginMember", member);
         List<Code> categoryList = codeService.getCategoryList();
         model.addAttribute("categoryList", categoryList);
+        List<Flavor> flavorList = itemService.getFlavorList();
+        model.addAttribute("flavorList", flavorList);
+
         return "add";
     }
 
     @PostMapping("/item/add")
     public String add(MultipartHttpServletRequest request) throws IOException {
+        commonUtils.printParams(request);
 
         Map<String, MultipartFile> fileMap = request.getFileMap();
         Map<String, String[]> parameterMap = request.getParameterMap();
@@ -136,8 +141,6 @@ public class ItemController {
         Item item = new Item();
         item.setItemNm(parameterMap.get("itemNm")[0]);
         item.setItemDsc(parameterMap.get("itemDsc")[0]);
-        item.setItemPrc(Long.parseLong(parameterMap.get("itemPrc")[0]));
-        item.setItemStc(Long.parseLong(parameterMap.get("itemAmt")[0]));
         item.setCategory(codeService.getCategoryCode(parameterMap.get("category")[0]));
         item.setImgGrpId(imgGrpId);
         String[] selectTags = parameterMap.get("selectTags")[0].split(",");
@@ -146,6 +149,18 @@ public class ItemController {
         item.setItemTagList(itemTagList);
         itemService.saveItem(item);
 
+        String[] selectFlavors = parameterMap.get("selectFlavor")[0].split(",");
+        List<Flavor> flavorList = itemService.getFlavors(Arrays.asList(selectFlavors));
+
+        Integer i = 0;
+        for (Flavor flavor : flavorList) {
+            itemService.saveItemStc(item,
+                    flavor,
+                    Long.parseLong(parameterMap.get("Quantity")[i]),
+                    parameterMap.get("Amount")[i],
+                    Long.parseLong(parameterMap.get("itemPrc")[i]));
+            i += 1;
+        }
         return "redirect:/";
     }
 

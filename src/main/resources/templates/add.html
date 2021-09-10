@@ -56,6 +56,38 @@
     <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 
 </head>
+<style>
+    .container{
+        max-width: 1300px;
+    }
+    .amount{
+        width: 80px !important;
+        height: 42px !important;
+        text-align: center;
+    }
+    .price{
+        width: 100px !important;
+        height: 42px !important;
+        text-align: center;
+    }
+    .flavorList{
+        width: 200px;
+        display: flex;
+        text-overflow: ellipsis;
+        overflow-x: clip;
+        overflow-y: visible;
+        white-space: nowrap;
+    }
+    .addItemIcon{
+        width: 25px; height: 25px;
+    }
+    .addItemTd{
+        text-align: center;
+    }
+    .myTable td{
+        padding: 7px;
+    }
+</style>
 <script th:inline="javascript">
     var tagIndex = 0;
     $(document).ready(function(){
@@ -86,6 +118,13 @@
                     formData.append("selectTags", selectTagParams);
                     formData.append("category", document.getElementById("category").value);
                     formData.append("itemDsc", document.getElementById("itemDsc").value);
+
+                    var selectFlavorParams = new Array();
+                    let flavors = document.getElementsByName("flavorForm");
+                    for (let i = 0; i < flavors.length; i++) {
+                        selectFlavorParams.push(flavors[i].value);
+                    }
+                    formData.append("selectFlavor", selectFlavorParams);
                     console.log(formData);
                 });
 
@@ -213,9 +252,21 @@
 <section id="contact-us" class="contact-us section">
     <div class="container">
         <div class="contact-head">
-            <form class="form" id="form" method="post" action="/item/add" enctype="multipart/form-data">
+            <script th:inline="javascript">
+                function beforeSubmit() {
+                    let flavors = document.getElementsByName("flavorForm");
+                    let appendParams = document.getElementById("appendParams");
+                    for (let i = 0; i < flavors.length; i++) {
+                        let input = document.createElement("input");
+                        input.setAttribute("name", "flavor");
+                        input.setAttribute("value", flavors[i].value);
+                        appendParams.appendChild(input);
+                    }
+                }
+            </script>
+            <form class="form" id="form" method="post" action="/item/add" enctype="multipart/form-data" onsubmit="beforeSubmit()">
                 <div class="row">
-                    <div class="col-lg-8 col-12">
+                    <div class="col-lg-6 col-12">
                         <div class="form-main">
                             <div class="title">
                                 <h4></h4>
@@ -244,13 +295,33 @@
                                 </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-12">
+                    <div class="col-lg-6 col-12">
                         <div class="single-head">
                             <div class="single-info" style="margin-bottom: 70px">
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label>Category<Name> </Name>*</label>
-                                        <div>
+                                        <script th:inline="javascript">
+                                            $(function(){
+                                                $(".categoryWrapper").on('change', 'select', function() {
+                                                    var categoryVal = document.getElementById("category").value;
+                                                    var flavorDiv = document.getElementById("flavorDiv");
+                                                    if (categoryVal == 'C0001') {
+                                                        if (flavorDiv.hasAttribute('hidden')) {
+                                                            flavorDiv.removeAttribute('hidden');
+
+                                                        }
+                                                    }
+                                                    else{
+                                                        if (!flavorDiv.hasAttribute('hidden')) {
+                                                            flavorDiv.setAttribute('hidden', 'hidden');
+                                                        }
+                                                    }
+                                                });
+                                                document.getElementById("flavor")
+                                            });
+                                        </script>
+                                        <div class="categoryWrapper">
                                             <select id="category" name="category" class="nice-select">
                                                 <option th:each="category : ${categoryList}"
                                                         th:value="${category.cd}"
@@ -280,21 +351,104 @@
                             <div class="single-info" style="magin-bottom: 70px">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Price (KRW)</label>
-                                        <input name="itemPrc" type="text" placeholder="Price">
+                                        <script th:inline="javascript">
+                                            var flavorList;
+                                            $(function(){
+                                                /*<![CDATA[*/
+                                                 flavorList = /*[[ ${flavorList} ]]*/;
+                                                /*]]*/
+                                            });
+                                            function addItem(target) {
+                                                let table = document.getElementById("itemDtlTable");
+                                                let tr = document.createElement("tr");
+                                                let td = document.createElement("td");
+                                                tr.appendChild(td);
+                                                let div = document.createElement("div");
+                                                div.setAttribute("class", "flavorList");
+                                                td.appendChild(div);
+                                                let select = document.createElement("select");
+                                                div.appendChild(select);
+                                                select.setAttribute("name", "flavorForm");
+                                                select.setAttribute("class", "nice-select");
+                                                for (var i in flavorList) {
+                                                    let option = document.createElement("option");
+                                                    option.setAttribute("value", flavorList[i].flvId);
+                                                    option.innerText = flavorList[i].flvNm;
+                                                    select.appendChild(option);
+                                                }
+
+                                                td = document.createElement("td");
+                                                tr.appendChild(td);
+                                                let input = document.createElement("input");
+                                                td.appendChild(input)
+                                                input.setAttribute("class", "amount");
+                                                input.setAttribute("name", "Amount");
+                                                input.setAttribute("type", "text");
+                                                input.setAttribute("placeholder", "500g");
+
+                                                td = document.createElement("td");
+                                                tr.appendChild(td);
+                                                input = document.createElement("input");
+                                                td.appendChild(input)
+                                                input.setAttribute("class", "amount");
+                                                input.setAttribute("name", "Quantity");
+                                                input.setAttribute("type", "text");
+                                                input.setAttribute("placeholder", "10");
+
+                                                td = document.createElement("td");
+                                                tr.appendChild(td);
+                                                input = document.createElement("input");
+                                                td.appendChild(input)
+                                                input.setAttribute("class", "price");
+                                                input.setAttribute("name", "itemPrc");
+                                                input.setAttribute("type", "text");
+                                                input.setAttribute("placeholder", "10,000");
+
+                                                let addItemTr = document.getElementById("addItemTr");
+                                                addItemTr.parentNode.insertBefore(tr, addItemTr);
+                                                $('select').niceSelect();
+                                            }
+                                        </script>
+                                        <table class="table myTable " id="itemDtlTable">
+                                            <tr>
+                                                <th>Flavor</th>
+                                                <th>Amount</th>
+                                                <th>Quantity</th>
+                                                <th>Price (KRW)</th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="flavorList">
+                                                        <select name="flavorForm" class="nice-select">
+                                                            <option th:each="flavor : ${flavorList}"
+                                                                    th:value="${flavor.flvId}"
+                                                                    th:utext="${flavor.flvNm}"
+                                                            />
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input class="amount" name="Amount" type="text" placeholder="500g">
+                                                </td>
+                                                <td>
+                                                    <input class="amount" name="Quantity" type="text" placeholder="10">
+                                                </td>
+                                                <td>
+                                                    <input class="price" name="itemPrc" type="text" placeholder="10,000">
+                                                </td>
+                                            </tr>
+                                            <tr id="addItemTr">
+                                                <td class="addItemTd" colspan="4">
+                                                    <button type="button" onclick="addItem(this)" class="addItemIcon"><img src="https://cdn3.iconfinder.com/data/icons/universal-3-1/614/14_-_Add-512.png"></button>
+                                                </td>
+                                            </tr>
+                                            <tr><td></td></tr>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                             <div class="single-info" style="magin-bottom: 70px">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label>Amount</label>
-                                        <input name="itemAmt" type="text" placeholder="Amount">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="single-info" style="magin-bottom: 70px">
-                                <div class="col-12">
+                                <div class="col-12" style="text-align: center">
                                     <div class="form-group button">
                                         <button type="submit" id="btn-upload-file" class="btn btn-upload-file">Register</button>
                                     </div>

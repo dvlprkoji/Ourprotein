@@ -23,7 +23,7 @@
                             <li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
                             <li><i class="ti-user"></i>
                                 <a th:if="${loginMember == null}" id="login">Login</a>
-                                <script th:inline="javascript">
+                                <script th:if="${loginMember == null}" th:inline="javascript">
                                     /*<![CDATA[*/
                                     let currentURI = /*[[ ${#httpServletRequest.requestURI} ]]*/;
                                     /*]]*/
