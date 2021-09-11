@@ -14,14 +14,6 @@ public class ItemDtl {
 
     private String itemNm;
 
-    private Long itemPrc;
-
-    private Long itemDscPrc;
-
-    private Long itemDscAmt;
-
-    private Long itemStc;
-
     private Double itemRat;
 
     private String itemDsc;
@@ -31,4 +23,6 @@ public class ItemDtl {
     private List<String> imgPathList;
 
     private List<Tag> tagList;
+
+    private List<ItemDscStc> itemDscStcList;
 }

@@ -70,6 +70,8 @@ public class ItemController {
             itemPreview.setItemId(item.getItemId());
             itemPreview.setItemNm(item.getItemNm());
 
+            itemPreview.setItemPrc(itemService.getMinPrc(item));
+
             Image mainImage = imageService.getProductMainImage(item.getImgGrpId());
             itemPreview.setMainImagePath(mainImage.getPath());
             if (imageService.getImageCnt(item.getImgGrpId()) > 1) {
@@ -91,10 +93,9 @@ public class ItemController {
                        Model model) {
         Item item = itemService.getItem(id);
         List<Image> imageList = imageService.getProductImageList(item.getImgGrpId());
-
         List<Tag> tagList = tagService.getTags(item);
-        ItemDtl itemDtl = itemService.getItemDtl(item, imageList, tagList);
-        itemService.setDscPrc(itemDtl, member);
+        List<ItemStc> itemStcList = itemService.getItemStcList(item);
+        ItemDtl itemDtl = itemService.getItemDtl(member, item, imageList, tagList, itemStcList);
         model.addAttribute("item", itemDtl);
         if (member != null) {
             model.addAttribute("loginMember", member);

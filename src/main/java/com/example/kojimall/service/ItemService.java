@@ -79,7 +79,7 @@ public class ItemService {
         return itemRepository.getItem(id);
     }
 
-    public ItemDtl getItemDtl(Item item, List<Image> imgList, List<Tag> tagList) {
+    public ItemDtl getItemDtl(Member member, Item item, List<Image> imgList, List<Tag> tagList, List<ItemStc> itemStcList) {
         ItemDtl itemDtl = new ItemDtl();
         itemDtl.setItemId(item.getItemId());
         itemDtl.setItemNm(item.getItemNm());
@@ -92,15 +92,27 @@ public class ItemService {
         }
         itemDtl.setImgPathList(imgPathList);
         itemDtl.setTagList(tagList);
+
+        List<ItemDscStc> itemDscStcList = new ArrayList<>();
+        for (ItemStc itemStc : itemStcList) {
+            ItemDscStc itemDscStc = new ItemDscStc();
+            this.discount(itemDscStc, itemStc, member);
+            itemDscStcList.add(itemDscStc);
+        }
+        itemDtl.setItemDscStcList(itemDscStcList);
         return itemDtl;
     }
 
-    public void setDscPrc(ItemDtl itemDtl, Member member) {
-        Long dscPrc = itemDtl.getItemPrc();
+    public void discount(ItemDscStc itemDscStc, ItemStc itemStc, Member member) {
+        Long dscPrc = itemStc.getItemPrc();
+        itemDscStc.setItemPrc(itemStc.getItemPrc());
+        itemDscStc.setFlavor(itemStc.getFlavor());
+        itemDscStc.setItemStcUnit(itemStc.getItemStcUnit());
+        itemDscStc.setItemStcAmt(itemStc.getItemStcAmt());
         Double dscRate = NORMAL;
         if (member == null) {
-            itemDtl.setItemDscPrc(itemDtl.getItemPrc());
-            itemDtl.setItemDscAmt(round(0.0));
+            itemDscStc.setItemDscPrc(itemStc.getItemPrc());
+            itemDscStc.setItemDscAmt(round(0.0));
             return;
         }
         if (member.getSubYn().equals("Y")){
@@ -110,10 +122,9 @@ public class ItemService {
             dscRate += VIP;
         }
 
-        dscPrc = round((double) dscPrc * (1-dscRate));
-        itemDtl.setItemDscPrc(dscPrc);
-        itemDtl.setItemDscAmt(itemDtl.getItemPrc() - dscPrc);
-
+        itemDscStc.setItemDscPrc(round((double) dscPrc * (1-dscRate)));
+        itemDscStc.setItemDscAmt(itemDscStc.getItemDscPrc() - dscPrc);
+        return;
     }
 
     public List<Flavor> getFlavorList() {
@@ -145,5 +156,13 @@ public class ItemService {
             flavorList.add(flavor);
         }
         return flavorList;
+    }
+
+    public Long getMinPrc(Item item) {
+        return itemStcRepository.getMinPrc(item);
+    }
+
+    public List<ItemStc> getItemStcList(Item item) {
+        return itemStcRepository.getItemStcList(item);
     }
 }

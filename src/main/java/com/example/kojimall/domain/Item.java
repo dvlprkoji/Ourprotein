@@ -4,6 +4,7 @@ package com.example.kojimall.domain;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
+@DynamicInsert
 @Table(schema = "kojimall")
 public class Item {
     @Id
@@ -21,15 +23,13 @@ public class Item {
     @Column(name = "item_nm")
     private String itemNm;
 
-
-
     @Column(name = "item_dsc")
     private String itemDsc;
 
     @Column(name = "img_grp_id")
     private String imgGrpId;
 
-    @Column(name = "item_rat", columnDefinition = "numeric(1,1) default 1.0")
+    @Column(name = "item_rat", nullable = false, columnDefinition = "numeric(2,1) default '1.0'")
     private Double itemRat;
 
     @ManyToOne(cascade = CascadeType.ALL)
