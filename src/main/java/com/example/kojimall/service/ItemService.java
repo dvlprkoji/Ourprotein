@@ -118,12 +118,12 @@ public class ItemService {
         if (member.getSubYn().equals("Y")){
             dscRate += SUBSCRIBE;
         }
-        if (member.getMemberRole().equals("VIP")) {
+        if (member.getMemberRole().getCdNm().equals("VIP")) {
             dscRate += VIP;
         }
 
         itemDscStc.setItemDscPrc(round((double) dscPrc * (1-dscRate)));
-        itemDscStc.setItemDscAmt(itemDscStc.getItemDscPrc() - dscPrc);
+        itemDscStc.setItemDscAmt(dscPrc - itemDscStc.getItemDscPrc());
         return;
     }
 

@@ -335,7 +335,7 @@
         }
         .athenaProductVariations_dropdownSegment {
             margin-top: 24px;
-            margin-bottom: 80px;
+            margin-bottom: 90px;
             display: block;
             position: relative;
         }
@@ -441,7 +441,7 @@
             background-color: transparent;
         }
         .nice-select .option{
-            width: 565px;
+            width: 446px;
         }
         .athenaProductVariations_box[data-selected] {
             border-color: #008190;
@@ -450,6 +450,7 @@
         .athenaProductPage_quantityAndActionsGroup {
             flex-direction: row;
             display: flex;
+            margin-top: 50px;
         }
         .athenaProductPage_productQuantityInput {
             margin-top: 0;
@@ -460,8 +461,11 @@
         .athenaProductPage_quantityText {
             margin-top: 0;
         }
-        .athenaProductPage_quantityInput {
-
+        .athenaProductPage_productQuantityInput {
+            margin-top: 0;
+            margin-bottom: 0;
+            flex-basis: 60%;
+            margin-right: 8px;
         }
         .productQuantityInput_messageBlock {
             margin-bottom: 0;
@@ -513,6 +517,9 @@
             justify-content: center;
             height: auto;
         }
+        .productQuantityInput_input_label{
+            margin-bottom: 0px;
+        }
         .productQuantityInput_decrease[disabled], .productQuantityInput_decrease.disabled {
             background: #fff;
             border-color: #b3b3b3;
@@ -557,6 +564,11 @@
             border-top: 0;
             border-bottom: 0;
         }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
         .productQuantityInput_increase {
             background: #f2f2f2;
             border-width: 2px;
@@ -597,6 +609,7 @@
             width: 100%;
             margin-top: 8px;
             margin-bottom: 0;
+            flex-basis: 32%;
             display: flex;
             align-items: flex-end;
         }
@@ -634,7 +647,6 @@
             display: block;
             width: 100%;
             margin-top: 8px;
-            margin-bottom: 8px;
         }
         .productAddToBasket {
             background: #008190;
@@ -661,10 +673,9 @@
             box-sizing: border-box;
             box-shadow: 0 2px 1px 0 #00262a;
             white-space: nowrap;
-            width: auto;
+            width: 120%;
             box-sizing: border-box;
             margin-top: 0;
-            margin-bottom: 8px;
             margin-left: 0;
             box-sizing: border-box;
             text-align: center;
@@ -765,7 +776,7 @@
 <div class="product-area section">
     <div class="itemDtlContatiner">
         <div class="row">
-            <div class="col-7">
+            <div class="col-8">
                 <div role="group" aria-label="제품 이미지" class="athenaProductPage_imageContainer">
                     <div class="athenaProductImageCarousel" data-component="athenaProductImageCarousel">
                         <div class="athenaProductImageCarousel_thumbnailScrollContainer ">
@@ -803,7 +814,7 @@
 
                 </div>
             </div>
-            <div class="col-5">
+            <div class="col-4">
                 <div class="single-info" th:object="${item}">
                     <div class="item-content">
                         <div class="item-title " th:text="*{itemNm}"></div>
@@ -974,7 +985,7 @@
                                 <span data-product-id="10530943" data-site-id="83" data-default-locale="ko_KR" data-from-wishlist="false" data-subsite-code="kr" data-component="productAddToBasketButton" data-component-priority="high" data-context="" data-linked-product="false" data-has-quantity-input="true" data-subscription-contract-id="">
                                     <span data-product-add-to-basket-button="">
                                         <button class="productAddToBasket productAddToBasket-buyNow js-e2e-add-basket" data-component="productAddToBasket" data-component-priority="high" aria-label="장바구니에 담기">
-                                        장바구니에 담기
+                                        Add to Cart
                                         </button>
                                     </span>
                                 </span>
