@@ -244,7 +244,7 @@
         .itemDtlContatiner{
             margin-left: 200px;
             margin-right: 200px;
-            max-width: 1400px;
+            max-width: 1300px;
         }
         .athenaProductPage_productRatingStars{
             margin-top: 8px;
@@ -444,8 +444,9 @@
             width: 446px;
         }
         .athenaProductVariations_box[data-selected] {
-            border-color: #008190;
+            border-color: orange;
             border-width: 2px;
+            outline: 0px !important;
         }
         .athenaProductPage_quantityAndActionsGroup {
             flex-direction: row;
@@ -618,10 +619,10 @@
         }
 
         .productAddToBasket-buyNow {
-            background: #008190;
+            background: orange;
             border-width: 1px;
             border-style: solid;
-            border-color: #008190;
+            border-color: orange;
             border-radius: 3px;
             font-family: Biotif,"Noto Sans","Noto Sans JP","Noto Sans KR",Helvetica;
             font-size: 16px;
@@ -649,10 +650,10 @@
             margin-top: 8px;
         }
         .productAddToBasket {
-            background: #008190;
+            background: orange;
             border-width: 1px;
             border-style: solid;
-            border-color: #008190;
+            border-color: orange;
             border-radius: 3px;
             font-family: Biotif,"Noto Sans","Noto Sans JP","Noto Sans KR",Helvetica;
             font-size: 16px;
@@ -671,7 +672,7 @@
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
-            box-shadow: 0 2px 1px 0 #00262a;
+            box-shadow: 0 2px 1px 0 peru;
             white-space: nowrap;
             width: 120%;
             box-sizing: border-box;
@@ -782,6 +783,10 @@
                         <div class="athenaProductImageCarousel_thumbnailScrollContainer ">
                             <ul class="athenaProductImageCarousel_thumbnailContainer" aria-label="Product Images">
                                 <script th:inline="javascript">
+                                    /*<![CDATA[*/
+                                    let item = /*[[ ${item} ]]*/;
+                                    /*]]*/
+
                                     $(function(){
                                         let thumbnailWrapperList= document.getElementsByName("thumbnailImageWrapper");
                                         thumbnailWrapperList[0].setAttribute("data-active", true);
@@ -876,7 +881,7 @@
                             <span class="productPrice_schema">KRW</span>
                             <span class="productPrice_schema productPrice_priceAmount" data-schema="price"></span>
                             <div class="productPrice_priceWithBadge">
-                                <span class="productPrice_priceInfo">
+                                <span class="productPrice_priceInfo" id="priceDiv">
                                     <span class="productPrice_rrpPriceInfo">
                                         <p th:if="${!(item.itemDscStcList[0].itemDscAmt.toString().equals('0'))}"class="productPrice_rrp" th:text="|original price: ₩${#numbers.formatInteger(item.itemDscStcList[0].itemPrc,3,'COMMA')}|">original Price</p>
                                     </span>
@@ -886,6 +891,57 @@
                             </div>
                         </div>
                     </div>
+                    <script th:inline="javascript">
+                        function numberWithCommas(x) {
+                            return '₩'+x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }
+                        function changePrice() {
+                            var priceDiv = document.getElementById("priceDiv");
+                            while (priceDiv.hasChildNodes()) {
+                                priceDiv.removeChild(priceDiv.firstChild);
+                            }
+
+
+                            var selectFlavor = document.getElementById('athena-product-variation-dropdown-5').value;
+                            console.log(selectFlavor);
+                            let amountList = document.getElementsByName("productVariationRadioId7");
+                            console.log(amountList);
+                            var selectAmount = 0;
+                            amountList.forEach(function(e){
+                                if (e.hasAttribute("data-selected")) {
+                                    selectAmount = e.value;
+                                    return false;
+                                }
+                            });
+                            var selectFlavorList = new Array();
+                            item.itemDscStcList.forEach(function(element){
+                                if (element.flavor.flvId == selectFlavor) {
+                                    selectFlavorList.push(element);
+                                }
+                            });
+                            console.log(selectFlavorList);
+
+                            let selectDetail = selectFlavorList[selectAmount];
+                            console.log(selectDetail);
+                            var p = document.createElement("p");
+                            if (selectDetail.itemDscAmt.toString()!='0') {
+                                p = document.createElement("p");
+                                p.setAttribute("class", "productPrice_rrp");
+                                p.innerText = 'Original Price: '+numberWithCommas(selectDetail.itemPrc);
+                                priceDiv.appendChild(p);
+                            }
+                            p = document.createElement("p");
+                            p.setAttribute("class", "productPrice_price");
+                            p.innerText = numberWithCommas(selectDetail.itemDscPrc);
+                            priceDiv.appendChild(p);
+                            if (selectDetail.itemDscAmt.toString()!='0') {
+                                p = document.createElement("p");
+                                p.setAttribute("class", "productPrice_savingAmount");
+                                p.innerText = 'Save '+numberWithCommas(selectDetail.itemDscAmt);
+                                priceDiv.appendChild(p);
+                            }
+                        }
+                    </script>
                     <div>
                         <hr aria-hidden="true" class="productPage_hr">
                     </div>
@@ -894,42 +950,87 @@
                             <div data-variation-container="athenaProductVariations" data-child-id="10797928" data-linked-product-id="0" data-linked-child-product-id="10797928" data-information-url="sports-nutrition/impact-whey-protein-250g-chocolate-smooth-250g/10797928.html" data-has-selection="true" data-information-current-quantity-basket="0" data-information-maximum-allowed-quantity="5000" data-enable-child-sku-description="" data-subscribe-and-save="" data-personalised-product="false">
 
                                 <div role="group" aria-label="Flavor" data-product-variation="">
-                                    <div class="athenaProductVariations_dropdownSegment" data-product-variation-type="dropdown">
+                                    <div class="athenaProductVariations_dropdownSegment" data-product-variation-type="dropdown" onchange="changeAmount()">
                                         <label id="athena-product-variation-label-5" class="athenaProductVariations_dropdownLabel" for="athena-product-variation-dropdown-5">Flavor:</label>
                                         <select id="athena-product-variation-dropdown-5" class="athenaProductVariations_dropdown" data-dropdown-type="default" data-dropdown="productVariation" data-variation-id="5" data-variation-unique-id="dd-5">
-                                            <option th:each="itemDscStc : ${item.itemDscStcList}"
-                                                    th:text="${itemDscStc.flavor.flvNm}"
-                                                    th:value="${itemDscStc.flavor.flvId}">
-                                                flvNm
-                                            </option>
                                         </select>
                                     </div>
-
                                 </div>
+                                <script th:inline="javascript">
+                                    let flavorList = [];
+                                    let flavorNmList = [];
+                                    item.itemDscStcList.forEach((element) => {
+                                        if (!flavorNmList.includes(element.flavor.flvNm)) {
+                                            flavorNmList.push(element.flavor.flvNm);
+                                            flavorList.push(element.flavor);
+                                        }
+                                    });
+                                    console.log(flavorList);
+
+                                    let select = document.getElementById("athena-product-variation-dropdown-5");
+                                    for (let i = 0; i < flavorList.length; i++) {
+                                        let option = document.createElement("option");
+                                        option.setAttribute("value", flavorList[i].flvId);
+                                        option.innerText = flavorList[i].flvNm;
+                                        select.appendChild(option);
+                                    }
+
+                                </script>
+
                                 <div role="group" aria-label="수량" data-product-variation="">
                                     <div class="athenaProductVariations_radioBoxesSegment" data-product-variation-type="radio">
                                         <label class="athenaProductVariations_dropdownLabel">Quantity:</label>
 
                                         <div class="athenaProductVariations_boxes">
                                             <input id="product-variation-hidden-input-7" type="hidden" data-dropdown-type="" data-dropdown="productVariation" data-variation-id="7" value="5876">
-                                            <ul class="athenaProductVariations_list" aria-label="Amount">
-                                                <li th:each="itemDscStc, index : ${item.itemDscStcList}" class="athenaProductVariations_listItem">
-                                                    <input th:if="${index.index == 0}" name="productVariationRadioId7" type="hidden" class="athenaProductVariations_radio srf-hide" value="5859" data-linked-product-id="default" data-radio="" data-variation-id="7" data-selected>
-                                                    <input th:if="${index.index != 0}" name="productVariationRadioId7" type="hidden" class="athenaProductVariations_radio srf-hide" value="5859" data-linked-product-id="default" data-radio="" data-variation-id="7">
-                                                    <button th:if="${index.index == 0}" type="button" th:text="${itemDscStc.itemStcUnit}" class="athenaProductVariations_box default" data-variation-id="7" data-option-id="5859" data-variation-unique-id="rb-5859" data-linked-product-id="default" data-selected>
-                                                        itemStcUnit
-                                                        <span class="srf-hide"> 선택 완료</span>
-                                                    </button>
-                                                    <button th:if="${index.index != 0}" type="button" th:text="${itemDscStc.itemStcUnit}" class="athenaProductVariations_box default" data-variation-id="7" data-option-id="5859" data-variation-unique-id="rb-5859" data-linked-product-id="default">
-                                                        itemStcUnit
-                                                        <span class="srf-hide"> 선택 완료</span>
-                                                    </button>
-                                                </li>
-                                            </ul>
+                                            <ul id="productVariationList" class="athenaProductVariations_list" aria-label="Amount"></ul>
                                         </div>
                                     </div>
 
                                 </div>
+                                <script th:inline="javascript">
+                                    function changeAmount() {
+                                        var selectFlavor = document.getElementById('athena-product-variation-dropdown-5').value;
+                                        var productVariationList = document.getElementById('productVariationList');
+                                        while (productVariationList.hasChildNodes()) {
+                                            productVariationList.removeChild(productVariationList.firstChild);
+                                        }
+                                        var index = 0;
+                                        item.itemDscStcList.forEach(function(element){
+                                            if (element.flavor.flvId == selectFlavor) {
+                                                let li = document.createElement("li");
+                                                li.setAttribute("class", "athenaProductVariations_listItem");
+                                                productVariationList.appendChild(li);
+                                                let input = document.createElement("input");
+                                                input.setAttribute("name", "productVariationRadioId7");
+                                                input.setAttribute("type", "hidden");
+                                                input.setAttribute("class", "athenaProductVariations_radio srf-hide");
+                                                input.setAttribute("value", index);
+                                                if (index == 0) {
+                                                    input.setAttribute("data-selected", "data-selected");
+                                                }
+                                                li.appendChild(input);
+                                                var button = document.createElement("button");
+                                                button.setAttribute("type", "button");
+                                                button.setAttribute("name", "productAmountButton");
+                                                button.setAttribute("class", "athenaProductVariations_box default");
+                                                button.setAttribute("onClick","changeQuantity(this)")
+                                                button.innerText = element.itemStcUnit;
+                                                if (index == 0) {
+                                                    button.setAttribute("data-selected", "data-selected");
+                                                }
+                                                li.appendChild(button);
+                                                var span = document.createElement("span");
+                                                span.setAttribute("class", "srf-hide");
+                                                span.innerText="선택 완료"
+                                                button.appendChild(span);
+                                                index += 1;
+                                            }
+                                        });
+                                        changePrice();
+                                    }
+                                    changeAmount();
+                                </script>
 
                             </div>
                         </div>
@@ -975,8 +1076,6 @@
                                         </button>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
 
@@ -991,8 +1090,28 @@
                                 </span>
 
                             </div>
-
                         </div>
+
+                        <script th:inline="javascript">
+                            function changeQuantity(target) {
+                                var boxes = document.getElementsByName("productAmountButton");
+                                boxes.forEach(function(e){
+                                    if (e.hasAttribute("data-selected")) {
+                                        e.removeAttribute("data-selected");
+                                    }
+                                });
+                                var inputs = document.getElementsByName("productVariationRadioId7");
+                                inputs.forEach(function(e){
+                                    if (e.hasAttribute("data-selected")) {
+                                        e.removeAttribute("data-selected");
+                                    }
+                                });
+                                target.parentNode.firstChild.setAttribute("data-selected", "data-selected");
+                                target.setAttribute("data-selected", "data-selected");
+
+                                changePrice();
+                            }
+                        </script>
 
                     </div>
                 </div>
