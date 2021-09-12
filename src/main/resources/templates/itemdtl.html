@@ -526,6 +526,7 @@
             border-color: #b3b3b3;
             border-width: 2px;
             color: #b3b3b3;
+            background-color: lightgrey;
             opacity: .8;
             cursor: not-allowed;
             box-shadow: initial;
@@ -895,6 +896,25 @@
                         function numberWithCommas(x) {
                             return '₩'+x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                         }
+
+                        function getCurrent() {
+                            var selectFlavor = document.getElementById('athena-product-variation-dropdown-5').value;
+                            let amountList = document.getElementsByName("productVariationRadioId7");
+                            var selectAmount = 0;
+                            amountList.forEach(function(e){
+                                if (e.hasAttribute("data-selected")) {
+                                    selectAmount = e.value;
+                                    return false;
+                                }
+                            });
+                            var selectFlavorList = new Array();
+                            item.itemDscStcList.forEach(function(element){
+                                if (element.flavor.flvId == selectFlavor) {
+                                    selectFlavorList.push(element);
+                                }
+                            });
+                            return selectFlavorList[selectAmount];
+                        }
                         function changePrice() {
                             var priceDiv = document.getElementById("priceDiv");
                             while (priceDiv.hasChildNodes()) {
@@ -979,7 +999,7 @@
 
                                 <div role="group" aria-label="수량" data-product-variation="">
                                     <div class="athenaProductVariations_radioBoxesSegment" data-product-variation-type="radio">
-                                        <label class="athenaProductVariations_dropdownLabel">Quantity:</label>
+                                        <label class="athenaProductVariations_dropdownLabel">Amount:</label>
 
                                         <div class="athenaProductVariations_boxes">
                                             <input id="product-variation-hidden-input-7" type="hidden" data-dropdown-type="" data-dropdown="productVariation" data-variation-id="7" value="5876">
@@ -1039,7 +1059,7 @@
 
                     <div class="athenaProductPage_quantityAndActionsGroup">
                         <div class="athenaProductPage_productQuantityInput" data-product-quantity-visibilty-wrapper="" data-show="true" data-quantity-input-container="">
-                            <div class="athenaProductPage_quantityText">수량:</div>
+                            <label class="athenaProductVariations_dropdownLabel">Quantity:</label>
                             <div class="athenaProductPage_quantityInput">
                                 <div id="product-quantity-message-block" class="productQuantityInput_messageBlock" data-message-block="">
                                     <p role="alert" class="productQuantityInput_messageBlockMessage productQuantityInput_messageBlockBasketLimit hideClass" data-message="basketLimit" data-quantity-message="maximumValueParent">Item limited to max quantity of
@@ -1057,7 +1077,7 @@
                                 </div>
                                 <div class="productQuantityInput_container" data-component="productQuantityInput">
                                     <div class="productQuantityInput" data-product-quantity-input-block="">
-                                        <button class="productQuantityInput_decrease" data-quantity-button="decrease" aria-label="수량 줄이기" title="수량 줄이기" disabled="">
+                                        <button class="productQuantityInput_decrease" id="decreaseButton" data-quantity-button="decrease" aria-label="수량 줄이기" title="수량 줄이기" disabled="" onclick="decrease()">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="productQuantityInput_icon productQuantityInput_icon-decrease" width="24" height="24" viewBox="0 0 24 24">
                                                 <rect width="12" height="2" x="6" y="11"></rect>
                                             </svg>
@@ -1065,10 +1085,10 @@
                                         </button>
 
                                         <label class="productQuantityInput_input_label"><span class="visually-hidden">수량:</span>
-                                            <input type="number" data-quantity-input="" class="productQuantityInput_input" value="1" min="1" max="99" title="수량:">
+                                            <input type="number" id="quantity" data-quantity-input="" class="productQuantityInput_input" value="1" min="1" max="99" title="수량:">
                                         </label>
 
-                                        <button class="productQuantityInput_increase" data-quantity-button="increase" aria-label="수량 늘리기" title="수량 늘리기">
+                                        <button class="productQuantityInput_increase" data-quantity-button="increase" aria-label="수량 늘리기" title="수량 늘리기" onclick="increase()">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="productQuantityInput_icon productQuantityInput_icon-increase" width="24" height="24" viewBox="0 0 24 24">
                                                 <polygon points="11 11 11 6 13 6 13 11 18 11 18 13 13 13 13 18 11 18 11 13 6 13 6 11"></polygon>
                                             </svg>
@@ -1093,6 +1113,44 @@
                         </div>
 
                         <script th:inline="javascript">
+
+                            function decrease() {
+                                var quantity = Number(document.getElementById("quantity").value);
+                                if (quantity == 1) {
+                                    return;
+                                } else {
+                                    document.getElementById("quantity").value = (quantity-1).toString();
+                                }
+                                if (quantity == 2) {
+                                    var dec = document.getElementById("decreaseButton");
+                                    if (!dec.hasAttribute("disabled")) {
+                                        dec.setAttribute("disabled", "disabled");
+                                    }
+                                }
+
+
+                            }
+
+                            function increase() {
+                                var quantity = Number(document.getElementById("quantity").value);
+                                if (checkStock(quantity+1)) {
+                                    document.getElementById("quantity").value = (quantity+1).toString();
+                                }
+                                var dec = document.getElementById("decreaseButton");
+                                if (dec.hasAttribute("disabled")) {
+                                    dec.removeAttribute("disabled");
+                                }
+                            }
+
+                            function checkStock(target) {
+                                var currentItemDscStc = getCurrent();
+                                if (currentItemDscStc.itemStcAmt<target) {
+                                    return false;
+                                }
+                                return true;
+                            }
+
+
                             function changeQuantity(target) {
                                 var boxes = document.getElementsByName("productAmountButton");
                                 boxes.forEach(function(e){
