@@ -1,14 +1,13 @@
-package com.example.kojimall.domain;
+package com.example.kojimall.domain.dto;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 
 @Data
-public class RegisterForm {
+public class UpdateForm {
 
-    @NotEmpty(message = "Full Name is a must")
-    public String name;
+
     @NotEmpty(message = "email is a must")
     public String email;
     @NotEmpty(message = "password is a must")

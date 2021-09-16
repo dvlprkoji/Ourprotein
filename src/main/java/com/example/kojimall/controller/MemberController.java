@@ -2,16 +2,14 @@ package com.example.kojimall.controller;
 
 import com.example.kojimall.common.CommonUtils;
 import com.example.kojimall.common.SessionConst;
-import com.example.kojimall.domain.LoginForm;
-import com.example.kojimall.domain.Member;
-import com.example.kojimall.domain.RegisterForm;
-import com.example.kojimall.domain.UpdateForm;
+import com.example.kojimall.domain.dto.LoginForm;
+import com.example.kojimall.domain.entity.Member;
+import com.example.kojimall.domain.dto.RegisterForm;
 import com.example.kojimall.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,11 +33,10 @@ public class MemberController {
 
     @PostMapping("/login")
     public String login(HttpServletRequest request,
+                        Model model,
                         @Valid @ModelAttribute("form") LoginForm loginForm,
                         BindingResult bindingResult,
                         @RequestParam(defaultValue = "/") String redirectURL) {
-        commonUtils.printParams(request);
-        System.out.println("request.getRequestURI() = " + request.getRequestURI());
         if (bindingResult.hasErrors()) {
             return "login";
         }
@@ -51,8 +48,7 @@ public class MemberController {
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
 
-
-
+        model.addAttribute("loginMember", memberService.toLoginMember((Member)session.getAttribute(SessionConst.LOGIN_MEMBER)));
         return "redirect:" + redirectURL;
     }
 
@@ -74,7 +70,6 @@ public class MemberController {
 
     @PostMapping("/register")
     public String register(HttpServletRequest request, Model model, @Valid @ModelAttribute("form") RegisterForm registerForm, BindingResult bindingResult) {
-        commonUtils.printParams(request);
         memberService.checkRegisterForm(registerForm, bindingResult);
         if (bindingResult.hasErrors()) {
             return "register";
@@ -93,7 +88,7 @@ public class MemberController {
 
         RegisterForm registerForm = memberService.toRegisterForm(member);
         model.addAttribute("form", registerForm);
-        model.addAttribute("loginMember", member);
+        model.addAttribute("loginMember", memberService.toLoginMember(member));
         return "mypage";
     }
 
@@ -107,12 +102,11 @@ public class MemberController {
         commonUtils.printParams(request);
         memberService.checkRegisterForm(registerForm, bindingResult);
         System.out.println("checked");
+        model.addAttribute("loginMember", memberService.toLoginMember(member));
         if (bindingResult.hasErrors()) {
             System.out.println("error ocurred");
-            model.addAttribute("loginMember", member);
             return "mypage";
         }
-        model.addAttribute("loginMember", member);
         memberService.update(member, registerForm);
         return "redirect:/";
     }

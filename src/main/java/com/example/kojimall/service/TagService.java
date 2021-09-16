@@ -1,7 +1,7 @@
 package com.example.kojimall.service;
 
-import com.example.kojimall.domain.Item;
-import com.example.kojimall.domain.Tag;
+import com.example.kojimall.domain.entity.Item;
+import com.example.kojimall.domain.entity.Tag;
 import com.example.kojimall.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

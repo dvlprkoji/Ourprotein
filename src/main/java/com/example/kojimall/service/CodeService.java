@@ -1,6 +1,6 @@
 package com.example.kojimall.service;
 
-import com.example.kojimall.domain.Code;
+import com.example.kojimall.domain.entity.Code;
 import com.example.kojimall.repository.CodeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

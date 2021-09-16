@@ -1,7 +1,7 @@
 package com.example.kojimall.repository;
 
-import com.example.kojimall.domain.Item;
-import com.example.kojimall.domain.Tag;
+import com.example.kojimall.domain.entity.Item;
+import com.example.kojimall.domain.entity.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

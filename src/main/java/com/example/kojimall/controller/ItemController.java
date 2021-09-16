@@ -3,10 +3,10 @@ package com.example.kojimall.controller;
 import com.example.kojimall.common.CommonUtils;
 import com.example.kojimall.common.Pagination;
 import com.example.kojimall.domain.*;
-import com.example.kojimall.service.CodeService;
-import com.example.kojimall.service.ImageService;
-import com.example.kojimall.service.ItemService;
-import com.example.kojimall.service.TagService;
+import com.example.kojimall.domain.dto.ItemDtl;
+import com.example.kojimall.domain.dto.ItemPreview;
+import com.example.kojimall.domain.entity.*;
+import com.example.kojimall.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -15,12 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.validation.constraints.Null;
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
-import static com.example.kojimall.domain.CodeVal.PRODUCT_MAIN;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,6 +27,7 @@ public class ItemController {
     private final CodeService codeService;
     private final ImageService imageService;
     private final TagService tagService;
+    private final MemberService memberService;
 
     @GetMapping("/item")
     public String list(@Nullable @RequestParam(name = "page") Integer page,
@@ -83,7 +80,7 @@ public class ItemController {
         }
         model.addAttribute("itemPreviewList", itemPreviewList);
 
-        model.addAttribute("loginMember", member);
+        model.addAttribute("loginMember", memberService.toLoginMember(member));
         return "item";
     }
 
@@ -98,14 +95,14 @@ public class ItemController {
         ItemDtl itemDtl = itemService.getItemDtl(member, item, imageList, tagList, itemStcList);
         model.addAttribute("item", itemDtl);
         if (member != null) {
-            model.addAttribute("loginMember", member);
+            model.addAttribute("loginMember", memberService.toLoginMember(member));
         }
         return "itemdtl";
     }
     @GetMapping("/item/add")
     public String add(Model model, @SessionAttribute(name = "loginMember") Member member) {
 
-        model.addAttribute("loginMember", member);
+        model.addAttribute("loginMember", memberService.toLoginMember(member));
         List<Code> categoryList = codeService.getCategoryList();
         model.addAttribute("categoryList", categoryList);
         List<Flavor> flavorList = itemService.getFlavorList();
@@ -117,6 +114,9 @@ public class ItemController {
     @PostMapping("/item/add")
     public String add(MultipartHttpServletRequest request) throws IOException {
         commonUtils.printParams(request);
+
+        ArrayList<String> arrayList = new ArrayList<>();
+
 
         Map<String, MultipartFile> fileMap = request.getFileMap();
         Map<String, String[]> parameterMap = request.getParameterMap();
@@ -171,5 +171,6 @@ public class ItemController {
         List<Tag> tags = itemService.getTags(word);
         return tags;
     }
+
 
 }

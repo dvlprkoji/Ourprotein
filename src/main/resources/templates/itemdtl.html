@@ -451,7 +451,7 @@
         .athenaProductPage_quantityAndActionsGroup {
             flex-direction: row;
             display: flex;
-            margin-top: 50px;
+            margin-top: 15px;
         }
         .athenaProductPage_productQuantityInput {
             margin-top: 0;
@@ -995,6 +995,9 @@
                                         select.appendChild(option);
                                     }
 
+                                    function addCart() {
+
+                                    }
                                 </script>
 
                                 <div role="group" aria-label="수량" data-product-variation="">
@@ -1103,7 +1106,7 @@
                             <div class="athenaProductPage_productAddToBasket">
                                 <span data-product-id="10530943" data-site-id="83" data-default-locale="ko_KR" data-from-wishlist="false" data-subsite-code="kr" data-component="productAddToBasketButton" data-component-priority="high" data-context="" data-linked-product="false" data-has-quantity-input="true" data-subscription-contract-id="">
                                     <span data-product-add-to-basket-button="">
-                                        <button class="productAddToBasket productAddToBasket-buyNow js-e2e-add-basket" data-component="productAddToBasket" data-component-priority="high" aria-label="장바구니에 담기">
+                                        <button onclick="addCart()" class="productAddToBasket productAddToBasket-buyNow js-e2e-add-basket" data-component="productAddToBasket" data-component-priority="high" aria-label="장바구니에 담기">
                                         Add to Cart
                                         </button>
                                     </span>

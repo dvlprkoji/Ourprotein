@@ -1,10 +1,10 @@
-package com.example.kojimall.domain;
+package com.example.kojimall.domain.dto;
 
+import com.example.kojimall.domain.ItemDscStc;
+import com.example.kojimall.domain.entity.Code;
+import com.example.kojimall.domain.entity.Tag;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data

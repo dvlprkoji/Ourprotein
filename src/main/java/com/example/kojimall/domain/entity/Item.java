@@ -1,8 +1,7 @@
-package com.example.kojimall.domain;
+package com.example.kojimall.domain.entity;
 
 
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -14,7 +13,7 @@ import java.util.List;
 @Entity
 @DynamicInsert
 @Table(schema = "kojimall")
-public class Item {
+public class Item extends BaseTimeEntity {
     @Id
     @GeneratedValue
     @Column(name = "item_id")
@@ -29,7 +28,7 @@ public class Item {
     @Column(name = "img_grp_id")
     private String imgGrpId;
 
-    @Column(name = "item_rat", nullable = false, columnDefinition = "numeric(2,1) default '1.0'")
+    @Column(name = "item_rat", nullable = false, columnDefinition = "numeric(2,1) default '5.0'")
     private Double itemRat;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -39,18 +38,9 @@ public class Item {
     })
     private Code category;
 
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private List<Stock> stockList;
 
     @OneToMany(mappedBy = "item")
     private List<ItemTag> itemTagList;
-
-    @Column(name = "reg_dt")
-    @CreationTimestamp
-    private LocalDateTime regDt;
-
-    @Column(name = "mod_dt")
-    @CreationTimestamp
-    private LocalDateTime modDt;
-
-
-
 }

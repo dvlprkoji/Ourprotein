@@ -1,19 +1,18 @@
 package com.example.kojimall.service;
 
 import com.example.kojimall.domain.*;
+import com.example.kojimall.domain.dto.ItemDtl;
+import com.example.kojimall.domain.entity.*;
 import com.example.kojimall.repository.FlavorRepository;
 import com.example.kojimall.repository.ItemRepository;
 import com.example.kojimall.repository.ItemStcRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.*;
 
-import static com.example.kojimall.domain.CodeVal.*;
 import static com.example.kojimall.domain.DiscountRate.*;
 import static java.lang.Math.round;
 

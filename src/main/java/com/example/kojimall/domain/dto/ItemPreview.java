@@ -1,4 +1,4 @@
-package com.example.kojimall.domain;
+package com.example.kojimall.domain.dto;
 
 import lombok.Data;
 

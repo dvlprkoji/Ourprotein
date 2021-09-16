@@ -1,11 +1,13 @@
 package com.example.kojimall.repository;
 
-import com.example.kojimall.domain.*;
+import com.example.kojimall.domain.entity.Code;
+import com.example.kojimall.domain.entity.Item;
+import com.example.kojimall.domain.entity.ItemTag;
+import com.example.kojimall.domain.entity.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 

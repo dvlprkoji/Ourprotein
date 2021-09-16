@@ -1,14 +1,14 @@
-package com.example.kojimall.domain;
+package com.example.kojimall.domain.entity;
 
+import com.example.kojimall.domain.Address;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(schema = "kojimall")
-public class Member {
+public class Member extends BaseTimeEntity{
 
     @Id
     @GeneratedValue
@@ -33,10 +33,4 @@ public class Member {
 
     @Column(name = "sub_yn")
     private String subYn;
-
-    @Column(name = "reg_dt")
-    private LocalDateTime regDate;
-    @Column(name = "mod_dt")
-    private LocalDateTime modDate;
-
 }

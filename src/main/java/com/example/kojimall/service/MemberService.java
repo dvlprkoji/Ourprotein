@@ -1,14 +1,18 @@
 package com.example.kojimall.service;
 
 import com.example.kojimall.domain.*;
+import com.example.kojimall.domain.dto.LoginForm;
+import com.example.kojimall.domain.dto.LoginMember;
+import com.example.kojimall.domain.dto.RegisterForm;
+import com.example.kojimall.domain.dto.UpdateForm;
+import com.example.kojimall.domain.entity.Code;
+import com.example.kojimall.domain.entity.Member;
 import com.example.kojimall.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 
-import javax.naming.Binding;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,6 +48,10 @@ public class MemberService {
         }
     }
 
+    public LoginMember toLoginMember(Member member) {
+        return new LoginMember(member.getId());
+    }
+
 
 
     public Member toMember(RegisterForm registerForm) {
@@ -55,8 +63,6 @@ public class MemberService {
         Address address = new Address(registerForm.getCity(), registerForm.getStreet(), registerForm.getZipcode());
         member.setAddress(address);
 
-        member.setModDate(LocalDateTime.now());
-        member.setRegDate(LocalDateTime.now());
 
         return member;
     }

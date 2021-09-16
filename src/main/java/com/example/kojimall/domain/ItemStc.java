@@ -1,5 +1,6 @@
 package com.example.kojimall.domain;
 
+import com.example.kojimall.domain.entity.Item;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(schema = "kojimall")
-public class ItemStc {
+public class ItemStc{
 
     @Id
     @GeneratedValue

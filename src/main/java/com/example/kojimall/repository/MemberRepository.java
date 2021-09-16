@@ -2,12 +2,15 @@ package com.example.kojimall.repository;
 
 
 import com.example.kojimall.domain.*;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.example.kojimall.domain.dto.LoginForm;
+import com.example.kojimall.domain.dto.RegisterForm;
+import com.example.kojimall.domain.entity.Code;
+import com.example.kojimall.domain.entity.CodeKey;
+import com.example.kojimall.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 

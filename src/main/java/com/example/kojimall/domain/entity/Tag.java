@@ -1,6 +1,6 @@
-package com.example.kojimall.domain;
+package com.example.kojimall.domain.entity;
 
-import lombok.Data;
+import com.example.kojimall.domain.entity.ItemTag;
 
 import javax.persistence.*;
 import java.util.List;
