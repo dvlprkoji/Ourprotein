@@ -26,4 +26,8 @@ public class CodeRepository {
         Code singleResult = query.getSingleResult();
         return singleResult;
     }
+
+    public void save(Code code) {
+        em.persist(code);
+    }
 }

@@ -2,12 +2,14 @@ package com.example.kojimall.domain.entity;
 
 import com.example.kojimall.domain.Address;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @Table(schema = "kojimall")
+@NoArgsConstructor
 public class Member extends BaseTimeEntity{
 
     @Id
@@ -33,4 +35,9 @@ public class Member extends BaseTimeEntity{
 
     @Column(name = "sub_yn")
     private String subYn;
+
+    public Member(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
 }

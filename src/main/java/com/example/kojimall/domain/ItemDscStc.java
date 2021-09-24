@@ -1,5 +1,6 @@
 package com.example.kojimall.domain;
 
+import com.example.kojimall.domain.entity.Flavor;
 import lombok.Data;
 
 

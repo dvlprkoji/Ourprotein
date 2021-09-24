@@ -1,7 +1,10 @@
 package com.example.kojimall.common;
 
 
+import com.example.kojimall.domain.entity.Item;
 import lombok.Data;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Data
 public class Pagination {
@@ -29,14 +32,14 @@ public class Pagination {
 
     private boolean next;
 
-    public void pageInfo(int page, int range, int listCnt) {
+    public void pageInfo(Page page) {
 
-        this.page = page;
-        this.range = range;
-        this.listCnt = listCnt;
+        this.page = page.getNumber()+1;
+        this.range = (page.getTotalPages() / rangeSize) + 1;
+        this.listCnt = ((Long)page.getTotalElements()).intValue();
 
         //전체 페이지수
-        this.pageCnt = (int)Math.ceil((double)listCnt/(double)listSize);
+        this.pageCnt = page.getTotalPages();
 
         //시작 페이지
         this.startPage = (range - 1) * rangeSize + 1 ;
@@ -45,10 +48,10 @@ public class Pagination {
         this.endPage = range * rangeSize;
 
         //게시판 시작번호
-        this.startList = (page - 1) * listSize;
+        this.startList = (this.page - 1) * listSize;
 
         // 게시판 끝번호
-        this.endList = this.startList + this.listSize;
+        this.endList = this.startList + this.listSize-1;
 
         //이전 버튼 상태
         this.prev = range == 1 ? false : true;

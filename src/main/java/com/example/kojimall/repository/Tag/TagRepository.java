@@ -1,4 +1,4 @@
-package com.example.kojimall.repository;
+package com.example.kojimall.repository.Tag;
 
 import com.example.kojimall.domain.entity.Item;
 import com.example.kojimall.domain.entity.Tag;

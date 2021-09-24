@@ -1,13 +1,15 @@
 package com.example.kojimall.domain.entity;
 
 import com.example.kojimall.domain.entity.ItemTag;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 @Table(schema = "kojimall")
-public class Tag {
+public class Tag extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -17,14 +19,12 @@ public class Tag {
     @Column(name = "tag_nm")
     private String tagNm;
 
-    @Column(name = "reg_dt")
-    private String regDt;
-
-    @Column(name = "mod_dt")
-    private String modDt;
-
     @OneToMany(mappedBy = "tag")
     private List<ItemTag> itemTagList;
+
+    public Tag(String tagNm) {
+        this.tagNm = tagNm;
+    }
 
     public Long getTagId() {
         return tagId;
@@ -42,19 +42,4 @@ public class Tag {
         this.tagNm = tagNm;
     }
 
-    public String getRegDt() {
-        return regDt;
-    }
-
-    public void setRegDt(String regDt) {
-        this.regDt = regDt;
-    }
-
-    public String getModDt() {
-        return modDt;
-    }
-
-    public void setModDt(String modDt) {
-        this.modDt = modDt;
-    }
 }

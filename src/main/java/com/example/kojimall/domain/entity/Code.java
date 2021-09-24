@@ -1,6 +1,7 @@
 package com.example.kojimall.domain.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 @Entity
 @Table(schema = "kojimall")
 @IdClass(CodeKey.class)
+@NoArgsConstructor
 public class Code implements Serializable {
     @Id
     private String cd;
@@ -19,5 +21,13 @@ public class Code implements Serializable {
     private String cdNm;
     @Column(name = "grp_cd_nm")
     private String grpCdNm;
+
+
+    public Code(String cd, String grpCd, String cdNm, String grpCdNm) {
+        this.cd = cd;
+        this.grpCd = grpCd;
+        this.cdNm = cdNm;
+        this.grpCdNm = grpCdNm;
+    }
 
 }

@@ -1,13 +1,16 @@
 package com.example.kojimall.domain.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import lombok.Data;
+
+import javax.persistence.*;
 
 @Entity(name = "clothing_stc")
 @Table(schema = "kojimall")
+@Data
 public class ClothingStock extends Stock {
 
-    @Column(name = "stc_sz")
-    private String stcSz;
+    @ManyToOne
+    @JoinColumn(name = "size_nm")
+    private Size size;
+
 }

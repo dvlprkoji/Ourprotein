@@ -1,6 +1,7 @@
 package com.example.kojimall.domain.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -16,6 +17,7 @@ public class ItemTag {
     @Column(name="itemtag_id")
     public Long itemTagId;
 
+    @JsonBackReference
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "item_id")
     public Item item;

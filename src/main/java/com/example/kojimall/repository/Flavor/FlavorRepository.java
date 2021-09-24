@@ -1,6 +1,6 @@
-package com.example.kojimall.repository;
+package com.example.kojimall.repository.Flavor;
 
-import com.example.kojimall.domain.Flavor;
+import com.example.kojimall.domain.entity.Flavor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

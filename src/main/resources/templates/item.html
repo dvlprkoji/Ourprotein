@@ -89,15 +89,13 @@
 							<div class="nav-main">
 								<ul class="nav nav-tabs" id="myTab" role="tablist">
 									<li class="nav-item">
-										<a th:if="${category eq 'all'}" class="nav-link active" data-toggle="tab" href="#" role="tab" th:value="all">전체</a>
-										<a th:if="${category ne 'all'}" class="nav-link" data-toggle="tab" href="#" role="tab" th:value="all">전체</a>
+										<a th:if="${category eq 'all'}" class="nav-link active" th:href="@{/item(category=all, page=1, size=8)}" role="tab" th:value="all">전체</a>
+										<a th:if="${category ne 'all'}" class="nav-link" th:href="@{/item(category=all, page=1, size=8)}" role="tab" th:value="all">전체</a>
 									</li>
-									<span th:each="cl : ${categoryList}">
-										<li class="nav-item">
-											<a th:if="${cl.cd eq category}" class="nav-link active" data-toggle="tab" th:href="@{/item(category=${cl.cd})}" role="tab" th:text="${cl.cdNm}">category</a>
-											<a th:if="${cl.cd ne category}" class="nav-link" data-toggle="tab" th:href="@{/item(category=${cl.cd})}" role="tab" th:text="${cl.cdNm}">category</a>
-										</li>
-									</span>
+									<li class="nav-item" th:each="cl : ${categoryList}">
+										<a th:if="${cl.cd eq category}" class="nav-link active" th:href="@{/item(category=${cl.cd}, page=1, size=8)}" role="tab" th:text="${cl.cdNm}">category</a>
+										<a th:if="${cl.cd ne category}" class="nav-link" th:href="@{/item(category=${cl.cd}, page=1, size=8)}" role="tab" th:text="${cl.cdNm}">category</a>
+									</li>
 								</ul>
 							</div>
 <!--						// category navigation-->
@@ -155,10 +153,10 @@
 							</li>
 							<span th:each="num : ${#numbers.sequence(pagination.getStartPage(), pagination.getEndPage())}">
 								<li th:if="${pagination.getPage() eq num}" class="page-item active">
-									<a class="page-link" th:href="@{/item(category=${category}, page=${num}, range=${pagination.getRange()})}" data-abc="true" th:text="${num}">page</a>
+									<a class="page-link" th:href="@{/item(category=${category}, page=${num}, size=8)}" data-abc="true" th:text="${num}">page</a>
 								</li>
 								<li th:if="${pagination.getPage() ne num}" class="page-item">
-									<a class="page-link" th:href="@{/item(category=${category}, page=${num}, range=${pagination.getRange()})}" data-abc="true" th:text="${num}">page</a>
+									<a class="page-link" th:href="@{/item(category=${category}, page=${num}, size=8)}" data-abc="true" th:text="${num}">page</a>
 								</li>
 							</span>
 							<li class="page-item">

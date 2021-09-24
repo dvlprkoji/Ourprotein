@@ -1,6 +1,8 @@
-package com.example.kojimall.domain;
+package com.example.kojimall.domain.entity;
 
+import com.example.kojimall.domain.entity.BaseTimeEntity;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -9,8 +11,9 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(schema = "kojimall")
-public class Flavor {
+public class Flavor extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -20,14 +23,10 @@ public class Flavor {
     @Column(name = "flv_nm")
     private String flvNm;
 
-    @Column(name = "use_yn")
+    @Column(name = "use_yn", columnDefinition = "varchar default 'Y'")
     private String useYn;
 
-    @Column(name = "reg_dt")
-    @CreationTimestamp
-    private LocalDateTime regDt;
-
-    @Column(name = "mod_dt")
-    @CreationTimestamp
-    private LocalDateTime modDt;
+    public Flavor(String flvNm) {
+        this.flvNm = flvNm;
+    }
 }

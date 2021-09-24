@@ -884,10 +884,10 @@
                             <div class="productPrice_priceWithBadge">
                                 <span class="productPrice_priceInfo" id="priceDiv">
                                     <span class="productPrice_rrpPriceInfo">
-                                        <p th:if="${!(item.itemDscStcList[0].itemDscAmt.toString().equals('0'))}"class="productPrice_rrp" th:text="|original price: ₩${#numbers.formatInteger(item.itemDscStcList[0].itemPrc,3,'COMMA')}|">original Price</p>
+                                        <p th:if="${!(item.stockList[0].itemDscAmt.toString().equals('0'))}"class="productPrice_rrp" th:text="|original price: ₩${#numbers.formatInteger(item.stockList[0].stcPrc,3,'COMMA')}|">original Price</p>
                                     </span>
-                                    <p class="productPrice_price " th:text="|₩${#numbers.formatInteger(item.itemDscStcList[0].itemDscPrc,3,'COMMA')}|">discount Price</p>
-                                    <p th:if="${!(item.itemDscStcList[0].itemDscAmt.toString().equals('0'))}" class="productPrice_savingAmount" th:text="|Save ₩${#numbers.formatInteger(item.itemDscStcList[0].itemDscAmt,3,'COMMA')}|">Save</p>
+                                    <p class="productPrice_price " th:text="|₩${#numbers.formatInteger(item.stockList[0].itemDscPrc,3,'COMMA')}|">discount Price</p>
+                                    <p th:if="${!(item.stockList[0].itemDscAmt.toString().equals('0'))}" class="productPrice_savingAmount" th:text="|Save ₩${#numbers.formatInteger(item.stockList[0].itemDscAmt,3,'COMMA')}|">Save</p>
                                 </span>
                             </div>
                         </div>
@@ -908,7 +908,7 @@
                                 }
                             });
                             var selectFlavorList = new Array();
-                            item.itemDscStcList.forEach(function(element){
+                            item.stockList.forEach(function(element){
                                 if (element.flavor.flvId == selectFlavor) {
                                     selectFlavorList.push(element);
                                 }
@@ -916,49 +916,86 @@
                             return selectFlavorList[selectAmount];
                         }
                         function changePrice() {
+
+
                             var priceDiv = document.getElementById("priceDiv");
                             while (priceDiv.hasChildNodes()) {
                                 priceDiv.removeChild(priceDiv.firstChild);
                             }
 
+                            if (item.category.cd == 'C0001') {
+                                var selectFlavor = document.getElementById('athena-product-variation-dropdown-5').value;
+                                console.log(selectFlavor);
+                                let amountList = document.getElementsByName("productVariationRadioId7");
+                                console.log(amountList);
+                                var selectAmount = 0;
+                                amountList.forEach(function(e){
+                                    if (e.hasAttribute("data-selected")) {
+                                        selectAmount = e.value;
+                                        return false;
+                                    }
+                                });
+                                var selectFlavorList = new Array();
+                                item.stockList.forEach(function(element){
+                                    if (element.flavor.flvId == selectFlavor) {
+                                        selectFlavorList.push(element);
+                                    }
+                                });
+                                console.log(selectFlavorList);
 
-                            var selectFlavor = document.getElementById('athena-product-variation-dropdown-5').value;
-                            console.log(selectFlavor);
-                            let amountList = document.getElementsByName("productVariationRadioId7");
-                            console.log(amountList);
-                            var selectAmount = 0;
-                            amountList.forEach(function(e){
-                                if (e.hasAttribute("data-selected")) {
-                                    selectAmount = e.value;
-                                    return false;
+                                let selectDetail = selectFlavorList[selectAmount];
+                                console.log(selectDetail);
+                                var p = document.createElement("p");
+                                if (selectDetail.itemDscAmt.toString()!='0') {
+                                    p = document.createElement("p");
+                                    p.setAttribute("class", "productPrice_rrp");
+                                    p.innerText = 'Original Price: '+numberWithCommas(selectDetail.stcPrc);
+                                    priceDiv.appendChild(p);
                                 }
-                            });
-                            var selectFlavorList = new Array();
-                            item.itemDscStcList.forEach(function(element){
-                                if (element.flavor.flvId == selectFlavor) {
-                                    selectFlavorList.push(element);
-                                }
-                            });
-                            console.log(selectFlavorList);
-
-                            let selectDetail = selectFlavorList[selectAmount];
-                            console.log(selectDetail);
-                            var p = document.createElement("p");
-                            if (selectDetail.itemDscAmt.toString()!='0') {
                                 p = document.createElement("p");
-                                p.setAttribute("class", "productPrice_rrp");
-                                p.innerText = 'Original Price: '+numberWithCommas(selectDetail.itemPrc);
+                                p.setAttribute("class", "productPrice_price");
+                                p.innerText = numberWithCommas(selectDetail.itemDscPrc);
                                 priceDiv.appendChild(p);
+                                if (selectDetail.itemDscAmt.toString()!='0') {
+                                    p = document.createElement("p");
+                                    p.setAttribute("class", "productPrice_savingAmount");
+                                    p.innerText = 'Save '+numberWithCommas(selectDetail.itemDscAmt);
+                                    priceDiv.appendChild(p);
+                                }
                             }
-                            p = document.createElement("p");
-                            p.setAttribute("class", "productPrice_price");
-                            p.innerText = numberWithCommas(selectDetail.itemDscPrc);
-                            priceDiv.appendChild(p);
-                            if (selectDetail.itemDscAmt.toString()!='0') {
+                            else if (item.category.cd == 'C0002') {
+                                let sizeList = document.getElementsByName("productSizeButton");
+                                var selectSize = 0;
+                                sizeList.forEach(function(e){
+                                    if (e.hasAttribute("data-selected")) {
+                                        selectSize = e.innerText;
+                                        return false;
+                                    }
+                                });
+                                var selectStock = 0;
+                                item.stockList.forEach(function(element){
+                                    if (element.size.sizeNm == selectSize) {
+                                        selectStock = element;
+                                    }
+                                });
+
+                                var p = document.createElement("p");
+                                if (selectStock.itemDscAmt.toString()!='0') {
+                                    p = document.createElement("p");
+                                    p.setAttribute("class", "productPrice_rrp");
+                                    p.innerText = 'Original Price: '+numberWithCommas(selectStock.stcPrc);
+                                    priceDiv.appendChild(p);
+                                }
                                 p = document.createElement("p");
-                                p.setAttribute("class", "productPrice_savingAmount");
-                                p.innerText = 'Save '+numberWithCommas(selectDetail.itemDscAmt);
+                                p.setAttribute("class", "productPrice_price");
+                                p.innerText = numberWithCommas(selectStock.itemDscPrc);
                                 priceDiv.appendChild(p);
+                                if (selectStock.itemDscAmt.toString()!='0') {
+                                    p = document.createElement("p");
+                                    p.setAttribute("class", "productPrice_savingAmount");
+                                    p.innerText = 'Save '+numberWithCommas(selectStock.itemDscAmt);
+                                    priceDiv.appendChild(p);
+                                }
                             }
                         }
                     </script>
@@ -968,18 +1005,18 @@
                     <div class="athenaProductPage_productVariations ">
                         <div class="athenaProductVariations" data-master-id="10530943" data-component="athenaProductVariations" data-component-priority="high">
                             <div data-variation-container="athenaProductVariations" data-child-id="10797928" data-linked-product-id="0" data-linked-child-product-id="10797928" data-information-url="sports-nutrition/impact-whey-protein-250g-chocolate-smooth-250g/10797928.html" data-has-selection="true" data-information-current-quantity-basket="0" data-information-maximum-allowed-quantity="5000" data-enable-child-sku-description="" data-subscribe-and-save="" data-personalised-product="false">
-
-                                <div role="group" aria-label="Flavor" data-product-variation="">
+                                <div th:if="${item.category.cd.equals('C0001')}" role="group" aria-label="Flavor" data-product-variation="">
                                     <div class="athenaProductVariations_dropdownSegment" data-product-variation-type="dropdown" onchange="changeAmount()">
                                         <label id="athena-product-variation-label-5" class="athenaProductVariations_dropdownLabel" for="athena-product-variation-dropdown-5">Flavor:</label>
                                         <select id="athena-product-variation-dropdown-5" class="athenaProductVariations_dropdown" data-dropdown-type="default" data-dropdown="productVariation" data-variation-id="5" data-variation-unique-id="dd-5">
                                         </select>
                                     </div>
                                 </div>
-                                <script th:inline="javascript">
+
+                                <script th:if="${item.category.cd.equals('C0001')}" th:inline="javascript">
                                     let flavorList = [];
                                     let flavorNmList = [];
-                                    item.itemDscStcList.forEach((element) => {
+                                    item.stockList.forEach((element) => {
                                         if (!flavorNmList.includes(element.flavor.flvNm)) {
                                             flavorNmList.push(element.flavor.flvNm);
                                             flavorList.push(element.flavor);
@@ -999,8 +1036,8 @@
 
                                     }
                                 </script>
-
-                                <div role="group" aria-label="수량" data-product-variation="">
+                                
+                                <div th:if="${item.category.cd.equals('C0001')}" role="group" aria-label="수량" data-product-variation="">
                                     <div class="athenaProductVariations_radioBoxesSegment" data-product-variation-type="radio">
                                         <label class="athenaProductVariations_dropdownLabel">Amount:</label>
 
@@ -1009,9 +1046,15 @@
                                             <ul id="productVariationList" class="athenaProductVariations_list" aria-label="Amount"></ul>
                                         </div>
                                     </div>
-
                                 </div>
-                                <script th:inline="javascript">
+
+                                <div th:if="${item.category.cd.equals('C0002')}" role="group" aria-label="수량" data-product-variation="">
+                                    <div class="athenaProductVariations_boxes">
+                                            <ul id="productVariationList" class="athenaProductVariations_list" aria-label="Amount"></ul>
+                                    </div>
+                                </div>
+
+                                <script th:if="${item.category.cd.equals('C0001')}" th:inline="javascript">
                                     function changeAmount() {
                                         var selectFlavor = document.getElementById('athena-product-variation-dropdown-5').value;
                                         var productVariationList = document.getElementById('productVariationList');
@@ -1019,7 +1062,7 @@
                                             productVariationList.removeChild(productVariationList.firstChild);
                                         }
                                         var index = 0;
-                                        item.itemDscStcList.forEach(function(element){
+                                        item.stockList.forEach(function(element){
                                             if (element.flavor.flvId == selectFlavor) {
                                                 let li = document.createElement("li");
                                                 li.setAttribute("class", "athenaProductVariations_listItem");
@@ -1038,7 +1081,7 @@
                                                 button.setAttribute("name", "productAmountButton");
                                                 button.setAttribute("class", "athenaProductVariations_box default");
                                                 button.setAttribute("onClick","changeQuantity(this)")
-                                                button.innerText = element.itemStcUnit;
+                                                button.innerText = element.stcAmt;
                                                 if (index == 0) {
                                                     button.setAttribute("data-selected", "data-selected");
                                                 }
@@ -1053,6 +1096,35 @@
                                         changePrice();
                                     }
                                     changeAmount();
+                                </script>
+
+                                <script th:if="${item.category.cd.equals('C0002')}" th:inline="javascript">
+                                    function changeSize() {
+                                        var productVariationList = document.getElementById('productVariationList');
+                                        while (productVariationList.hasChildNodes()) {
+                                            productVariationList.removeChild(productVariationList.firstChild);
+                                        }
+                                        var index = 0;
+                                        item.stockList.forEach(function(element){
+                                            let li = document.createElement("li");
+                                            li.setAttribute("class", "athenaProductVariations_listItem");
+                                            productVariationList.appendChild(li);
+
+                                            var button = document.createElement("button");
+                                            button.setAttribute("type", "button");
+                                            button.setAttribute("name", "productSizeButton");
+                                            button.setAttribute("class", "athenaProductVariations_box default");
+                                            button.setAttribute("onClick","changeSize(this)")
+                                            button.innerText = element.size.sizeNm;
+                                            if (index == 0) {
+                                                button.setAttribute("data-selected", "data-selected");
+                                            }
+                                            li.appendChild(button);
+                                            index += 1;
+                                        });
+                                        changePrice();
+                                    }
+                                    changeSize();
                                 </script>
 
                             </div>

@@ -1,6 +1,7 @@
 package com.example.kojimall.common;
 
 
+import com.example.kojimall.domain.SessionConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.PatternMatchUtils;
 
@@ -14,9 +15,9 @@ import java.io.IOException;
 public class LoginCheckFilter implements Filter {
 
     private static final String[] whiteList = {"/",
-            "/register",
-            "/login",
-            "/logout",
+            "/register*",
+            "/login*",
+            "/logout*",
             "/css/*",
             "/fonts/*",
             "/style.css",
@@ -24,6 +25,7 @@ public class LoginCheckFilter implements Filter {
             "/mail/*",
             "/scss/*",
             "/item",
+            "/oauth/*",
             "/item/*"};
 
     @Override

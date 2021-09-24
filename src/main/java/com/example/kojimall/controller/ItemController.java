@@ -2,12 +2,14 @@ package com.example.kojimall.controller;
 
 import com.example.kojimall.common.CommonUtils;
 import com.example.kojimall.common.Pagination;
-import com.example.kojimall.domain.*;
-import com.example.kojimall.domain.dto.ItemDtl;
+import com.example.kojimall.domain.dto.ItemDtl.ItemDtl;
 import com.example.kojimall.domain.dto.ItemPreview;
 import com.example.kojimall.domain.entity.*;
 import com.example.kojimall.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,20 +32,30 @@ public class ItemController {
     private final MemberService memberService;
 
     @GetMapping("/item")
-    public String list(@Nullable @RequestParam(name = "page") Integer page,
-                       @Nullable @RequestParam(name = "range") Integer range,
-                       @Nullable @RequestParam(name = "category") String category,
+    public String list(@RequestParam(name = "page") Integer page,
+                       @RequestParam(name = "size") Integer size,
+                       @RequestParam(name = "category") String category,
                        @Nullable @SessionAttribute("loginMember") Member member,
                        Model model) {
+        page -= 1;
+        Page<ItemPreview> itemPreviewList;
+        if (category.equals("all")) {
+            itemPreviewList = itemService
+                    .findAll(PageRequest.of(page, size, Sort.Direction.DESC, "regDt"))
+                    .map(item -> toItemPreview(item));
+        }
+        else{
+            // ItemList
+            itemPreviewList = itemService
+                    .findByCategory(codeService.getCategoryCode(category), PageRequest.of(page, size, Sort.Direction.DESC, "regDt"))
+                    .map(item -> toItemPreview(item));
+        }
+        model.addAttribute("itemPreviewList", itemPreviewList);
 
         // Pagination
         Pagination pagination = new Pagination();
-        Integer itemCnt = itemService.getItemCnt(category).intValue();
-        if (page == null) {
-            pagination.pageInfo(1, 1, itemCnt);
-        } else {
-            pagination.pageInfo(page, range, itemCnt);
-        }
+        pagination.pageInfo(itemPreviewList);
+
         model.addAttribute("pagination", pagination);
 
         //  Category List
@@ -56,32 +68,28 @@ public class ItemController {
         } else {
             model.addAttribute("category", category);
         }
+        if (member != null) {
+            model.addAttribute("loginMember", memberService.toLoginMember(member, codeService.getEmailLoginCode()));
 
-        // ItemList
-        List<Item> itemList = itemService.getItemList(pagination.getStartList(), pagination.getEndList());
-        model.addAttribute("itemList", itemList);
-
-        List<ItemPreview> itemPreviewList = new ArrayList<>();
-        for (Item item : itemList) {
-            ItemPreview itemPreview = new ItemPreview();
-            itemPreview.setItemId(item.getItemId());
-            itemPreview.setItemNm(item.getItemNm());
-
-            itemPreview.setItemPrc(itemService.getMinPrc(item));
-
-            Image mainImage = imageService.getProductMainImage(item.getImgGrpId());
-            itemPreview.setMainImagePath(mainImage.getPath());
-            if (imageService.getImageCnt(item.getImgGrpId()) > 1) {
-                Image hoverImage = imageService.getProductHoverImage(item.getImgGrpId());
-                itemPreview.setHoverImagePath(hoverImage.getPath());
-            }
-
-            itemPreviewList.add(itemPreview);
         }
-        model.addAttribute("itemPreviewList", itemPreviewList);
-
-        model.addAttribute("loginMember", memberService.toLoginMember(member));
         return "item";
+    }
+
+    private ItemPreview toItemPreview(Item item) {
+        ItemPreview itemPreview = new ItemPreview();
+        itemPreview.setItemId(item.getItemId());
+        itemPreview.setItemNm(item.getItemNm());
+
+        itemPreview.setItemPrc(itemService.getMinPrc(item));
+
+        Image mainImage = imageService.getProductMainImage(item.getImgGrpId());
+        itemPreview.setMainImagePath(mainImage.getPath());
+        if (imageService.getImageCnt(item.getImgGrpId()) > 1) {
+            Image hoverImage = imageService.getProductHoverImage(item.getImgGrpId());
+            itemPreview.setHoverImagePath(hoverImage.getPath());
+        }
+
+        return itemPreview;
     }
 
     @GetMapping("/item/detail")
@@ -89,23 +97,26 @@ public class ItemController {
                        @Nullable @SessionAttribute(name="loginMember") Member member,
                        Model model) {
         Item item = itemService.getItem(id);
+        itemService.viewUp(item);
         List<Image> imageList = imageService.getProductImageList(item.getImgGrpId());
         List<Tag> tagList = tagService.getTags(item);
-        List<ItemStc> itemStcList = itemService.getItemStcList(item);
-        ItemDtl itemDtl = itemService.getItemDtl(member, item, imageList, tagList, itemStcList);
+        List<Stock> stockList = itemService.getStockList(id);
+        ItemDtl itemDtl = itemService.getItemDtl(member, item, imageList, tagList, stockList);
         model.addAttribute("item", itemDtl);
         if (member != null) {
-            model.addAttribute("loginMember", memberService.toLoginMember(member));
+            model.addAttribute("loginMember", memberService.toLoginMember(member, codeService.getEmailLoginCode()));
         }
         return "itemdtl";
     }
     @GetMapping("/item/add")
     public String add(Model model, @SessionAttribute(name = "loginMember") Member member) {
 
-        model.addAttribute("loginMember", memberService.toLoginMember(member));
+        model.addAttribute("loginMember", memberService.toLoginMember(member, codeService.getEmailLoginCode()));
         List<Code> categoryList = codeService.getCategoryList();
         model.addAttribute("categoryList", categoryList);
         List<Flavor> flavorList = itemService.getFlavorList();
+        List<Size> sizeList = itemService.getSizeList();
+        model.addAttribute("sizeList", sizeList);
         model.addAttribute("flavorList", flavorList);
 
         return "add";
@@ -150,18 +161,37 @@ public class ItemController {
         item.setItemTagList(itemTagList);
         itemService.saveItem(item);
 
-        String[] selectFlavors = parameterMap.get("selectFlavor")[0].split(",");
-        List<Flavor> flavorList = itemService.getFlavors(Arrays.asList(selectFlavors));
 
-        Integer i = 0;
-        for (Flavor flavor : flavorList) {
-            itemService.saveItemStc(item,
-                    flavor,
-                    Long.parseLong(parameterMap.get("Quantity")[i]),
-                    parameterMap.get("Amount")[i],
-                    Long.parseLong(parameterMap.get("itemPrc")[i]));
-            i += 1;
+        if (request.getParameter("category").equals("C0001")) {
+            String[] selectFlavors = parameterMap.get("selectFlavor")[0].split(",");
+            List<Flavor> flavorList = itemService.getFlavors(Arrays.asList(selectFlavors));
+
+            Integer i = 0;
+            for (Flavor flavor : flavorList) {
+                itemService.saveNutritionStc(
+                        item,
+                        flavor,
+                        Long.parseLong(parameterMap.get("Quantity")[i]),
+                        parameterMap.get("Amount")[i],
+                        Long.parseLong(parameterMap.get("itemPrc")[i]));
+                i += 1;
+            }
         }
+
+        else if (request.getParameter("category").equals("C0002")) {
+            String[] selectSizes = parameterMap.get("selectSize")[0].split(",");
+            List<Size> sizeList = itemService.getSizes(Arrays.asList(selectSizes));
+
+            Integer i = 0;
+            for (Size size : sizeList) {
+                itemService.saveClothingStc(item,
+                        size,
+                        Long.parseLong(parameterMap.get("Quantity")[i]),
+                        Long.parseLong(parameterMap.get("itemPrc")[i]));
+                i += 1;
+            }
+        }
+
         return "redirect:/";
     }
 

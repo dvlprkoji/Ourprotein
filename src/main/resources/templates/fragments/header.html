@@ -41,7 +41,8 @@
                             </li>
                             <li><i class="ti-power-off"></i>
                                 <a th:if="${loginMember == null}" href="http://localhost:8080/register">Register</a>
-                                <a th:if="${loginMember != null}" href="http://localhost:8080/logout">Logout</a>
+                                <a th:if="${loginMember != null && loginMember.loginType.cd == 'LIN_EML'}" href="http://localhost:8080/logout">Logout</a>
+                                <a th:if="${loginMember != null && loginMember.loginType.cd == 'LIN_KKO'}" href="https://kauth.kakao.com/oauth/logout?client_id=b001ffd51a68c280d3fc78d0b7be7a84&logout_redirect_uri=http://localhost:8080/logout/kakao">Logout</a>
                             </li>
                         </ul>
                     </div>
@@ -128,7 +129,7 @@
                                         <span class="total-amount">$134.00</span>
                                     </div>
                                     <a href="checkout.html" class="btn animate">Checkout</a>
-                                </div>
+                                </div><x></x>
                             </div>
                             <!--/ End Shopping Item -->
                         </div>
@@ -156,10 +157,10 @@
                                                 <li><a href="http://localhost:8080">Home</a></li>
                                             </div>
                                             <div th:if="${#httpServletRequest.requestURI.split('/').length>1 and #httpServletRequest.requestURI.split('/')[1] == 'item'}">
-                                                <li class="active"><a href="http://localhost:8080/item">Product</a></li>
+                                                <li class="active"><a href="http://localhost:8080/item?category=all&page=1&size=8">Product</a></li>
                                             </div>
                                             <div th:unless="${#httpServletRequest.requestURI.split('/').length>1 and #httpServletRequest.requestURI.split('/')[1] == 'item'}">
-                                                <li><a href="http://localhost:8080/item">Product</a></li>
+                                                <li><a href="http://localhost:8080/item?category=all&page=1&size=8">Product</a></li>
                                             </div>
                                             <li><a href="#">Service</a></li>
                                             <li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
